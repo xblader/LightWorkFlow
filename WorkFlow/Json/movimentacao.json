@@ -1,0 +1,327 @@
+﻿{
+  "Conditions": [
+    {
+      "Name": "EXTINCAO",
+      "Parameters": [
+        {
+          "Key": "Finalidade",
+          "Value": [
+            "4",
+            "3",
+            "7",
+            "5",
+            "9",
+            "8"
+          ]
+        }
+      ]
+    },	
+    {
+      "Name": "DESTRUICAO",
+      "Parameters": [
+        {
+          "Key": "Finalidade",
+          "Value": [
+            "3"
+          ]
+        }
+      ]
+    },	
+    {
+      "Name": "EXPORTACAO",
+      "Parameters": [
+        {
+          "Key": "Finalidade",
+          "Value": [
+            "4",
+            "8"
+          ]
+        }
+      ]
+    },
+    {
+      "Name": "ES",
+      "Parameters": [
+        {
+          "Key": "Orgão",
+          "Value": [
+            "40"
+          ]
+        }
+      ]
+    },
+	{
+      "Name": "EHPARTE",
+      "Parameters": [
+        {
+          "Key": "Parte",
+          "Value": [
+            "True"
+          ]
+        }
+      ]
+    },
+	{
+      "Name": "NAOMOVIMENTADO",
+      "Parameters": [
+        {
+          "Key": "MOVIMENTADO",
+          "Value": [
+            "false"
+          ]
+        }
+      ]
+    }
+  ],
+  "WorkFlow": [
+    {
+      "Id": 1,      
+      "SourceState": "None",   
+	  "Transitions": [{ Operation:"CANCELAMENTO_SOLICITADO", Description:"None" , "DestinyState": "CANCELAMENTOSOLICITADOPDM"},
+					  { Operation:"ATUALIZA_PDM_CANCEL", Description:"None" , "DestinyState": "PADGERADO"},
+					  { Operation:"PAD_VISTORIAR_MATERIAL", Description:"None" , "DestinyState": "EMVISTORIA"},
+					  { Operation:"ULTIMO_ITEM_CANCELADO_PDM", Description:"None" , "DestinyState": "CANCELADOPDM"},
+					  { Operation:"ITEM_CANCELADO_PAD", Description:"None" , "DestinyState": "EMANALISE"},
+					  { Operation:"CancelarPDM", Description:"None" , "DestinyState": "CANCELADOPDM"},
+					  { Operation:"ULTIMO_ITEM_CANCELADO_PAD", Description:"None" , "DestinyState": "CANCELADOPAD"},
+					  { Operation:"CANCELAMENTO_SOLICITADO_PAD", Description:"None" , "DestinyState": "CANCELAMENTOSOLICITADOPAD"}],   
+     
+      "Area": "Automatico"
+    }, 
+	{
+      "Id": 2,     
+      "SourceState": "All",
+	  "Transitions": [{ But:["CANCELADOPAD", "ENCERRADO", "FIM" , "None"], Operation:"PAD_CANCELAR", Description:"Cancelar PAD" , "DestinyState": "CANCELADOPAD"}],           
+      "Area": "BarraBotoesPAD"
+    },  			  
+    {
+      "Id": 8,     
+      "SourceState": "AGUARDAMOVIMENTAÇÃO",
+	  "Transitions": [{ Operation:"PAD_DISPONOBILIZAR_VISTORIA", Description:"Disponibilizar para Vistoria" , "DestinyState": "EMVISTORIA"},
+					  { Operation:"ASSOCIA_RT", Description:"Associar RT" , "DestinyState": "None"}],           
+      "Area": "BarraBotoesPAD"
+    },   
+    {
+      "Id": 10,      
+      "SourceState": "AGUARDAMOVIMENTAÇÃODESTINO",
+	  "Transitions": [{ Condition:"!EXTINCAO", Operation:"PAD_CONFIRMAR_CHEGADA_DESTINO", Description:"Confirmar chegada" , "DestinyState": "AGUARDARETORNO"},					  
+					  { Condition: "EXTINCAO", Operation:"PROTOCOLAR_REQUERIMENTO", Description:"Protocolar Requerimento" , "DestinyState": "PROTOCOLOREQUERIMENTO"}],    
+      "Area": "BarraBotoesPAD"
+    },
+    {
+      "Id": 11,     
+      "SourceState": "AGUARDARETORNO",
+      "Transitions": [{ Operation:"RETORNO_CONFIRMADO", Description:"Confirmar Retorno" , "DestinyState": "RETORNOCONFIRMADO"}],      
+      "Area": "BarraBotoesPAD"
+    },
+	{
+      "Id": 16,     
+      "SourceState": "RETORNOCONFIRMADO",
+      "Transitions": [{ Operation:"CONFIRMAR_ENCERRAMENTO", Description:"Confirmação de Encerramento" , "DestinyState": "ENCERRADO"}],      
+      "Area": "BarraBotoesPAD"
+    },
+    {
+      "Id": 12,     
+      "SourceState": "AGUARDANDODESTRUIÇÃO",
+	  "Transitions": [{ Operation:"DESTRUICAO_EFETUADA", Description:"Destruição Efetuada" , "DestinyState": "ENCERRAMENTOPROCESSO"}],        
+      "Area": "BarraBotoesPAD"
+    },
+    {
+      "Id": 13,      
+      "SourceState": "AGUARDANDOIDENTIFICAÇÃO",      
+	  "Transitions": [{ Operation:"PAD_INFORMAR_APOIO_TECNICO", Description:"Informar apoio técnico" , "DestinyState": "EMVISTORIA"}],       
+      "Area": "BarraBotoesPAD"
+    },
+    {
+      "Id": 14,     
+      "SourceState": "CANCELAMENTOSOLICITADOPAD",
+      "Transitions": [{ Operation:"RETORNAR_FLUXO_PAD", Description:"Indeferir Solicitação" , "DestinyState": "None"}],    
+      "Area": "BarraBotoesPAD"
+    },
+    {
+      "Id": 15,     
+      "SourceState": "DIVERGENTE",
+      "Transitions": [{ Operation:"PAD_INFORMAR_TRANSPORTE", Description:"Informar Justificativa" , "DestinyState": "MOVIMENTAÇÃOAUTORIZADA"},
+					  { Operation:"PAD_DIVERGENTE_VISTORIA", Description:"Confirmar Acerto" , "DestinyState": "EMVISTORIA"}],
+    
+      "Area": "BarraBotoesPAD"
+    },     
+    {
+      "Id": 18,     
+      "SourceState": "EMVISTORIA",
+      "Transitions": [{ Operation:"AGUARDANDO_IDENTIFICACAO", Description:"Solicitar Apoio Técnico" , "DestinyState": "AGUARDANDOIDENTIFICAÇÃO"},
+					  { Operation:"PAD_DIVERGENTE_ALTERAR", Description:"Informar Divergência" , "DestinyState": "DIVERGENTE"},
+					  { Operation:"PAD_VISTORIAR_MATERIAL", Description:"Concluir Vistoria" , "DestinyState": "AGUARDAMOVIMENTAÇÃODESTINO"}	],
+    
+      "Area": "BarraBotoesPAD"
+    },      
+    {
+      "Id": 21,      
+      "SourceState": "MOVIMENTAÇÃOAUTORIZADA",
+      "Transitions": [{ Operation:"PAD_DESEMBARCAR_MATERIAL", Description:"Movimentar Material" , "DestinyState": "AGUARDAMOVIMENTAÇÃO"},
+					  { Operation:"ASSOCIA_RT", Description:"Associar RT" , "DestinyState": "None"}],
+     
+      "Area": "BarraBotoesPAD"
+    },   
+    {
+      "Id": 23,      
+      "SourceState": "PADANALISANDOINDEFERIMENTO",
+      "Transitions": [{ Operation:"PAD_PROTOCOLAR_RECEITA", Description:"Protocolar na Receita" , "DestinyState": "PROTOCOLAPADRECEITA"},
+					  { Operation:"PAD_CANCELAR", Description:"Cancelar PAD" , "DestinyState": "CANCELADOPAD"}],
+      
+      "Area": "BarraBotoesPAD"
+    },    
+    {
+      "Id": 25,     
+      "SourceState": "PADEMITIDO",
+	  "StateOrder": "Initial",
+      "Transitions": [{ Operation:"PAD_AUTORIZAR_DESEMBARQUE", Description:"Autorizar Movimentação" , "DestinyState": "MOVIMENTAÇÃOAUTORIZADA"},
+					  { Condition:"ES",  Operation:"PAD_PROTOCOLAR_RECEITA", Description:"Protocolar na Receita" , "DestinyState": "PROTOCOLAPADRECEITA"}],
+     
+      "Area": "BarraBotoesPAD"
+    },
+    {
+      "Id": 26,     
+      "SourceState": "PROTOCOLAPADRECEITA",
+      "Transitions": [{ Operation:"PAD_INDEFERIR_RECEITA", Description:"Indeferir PAD na Receita" , "DestinyState": "PADANALISANDOINDEFERIMENTO"},
+					  { Operation:"PAD_AUTORIZAR_DESEMBARQUE", Description:"Autorizar Desembarque" , "DestinyState": "MOVIMENTAÇÃOAUTORIZADA"}],
+     
+      "Area": "BarraBotoesPAD"
+    },  
+    {
+      "Id": 30,      
+      "SourceState": "ENCERRAMENTOPROCESSO",
+      "Transitions": [{ Condition: "DESTRUICAO", Operation:"ENCERRAR_DESTRUICAO", Description:"Encerrar Destruição" , "DestinyState": "ENCERRADO"}],
+            
+      "Area": "BarraBotoesPAD"
+    },
+    {
+      "Id": 31,     
+      "SourceState": "PROTOCOLOREQUERIMENTO",
+      "Transitions": [{ Condition: "DESTRUICAO", Operation:"AGUARDAR_DESTRUICAO", Description:"Aguardar Destruição" , "DestinyState": "AGUARDANDODESTRUIÇÃO"},
+					  { Condition: "!DESTRUICAO", Operation:"PAD_CONFIRMAR_CHEGADA_DESTINO", Description:"Confimar Chegada" , "DestinyState": "AGUARDARETORNO"}],
+           
+      "Area": "BarraBotoesPAD"
+    },
+    {
+      "Id": 32,     
+      "SourceState": "AGUARDANDOAPROVAÇÃO",     
+	  "Transitions": [{ Operation:"EmitirPDM", Description:"Emitir SRM" , "DestinyState": "EMITIDO"},
+					  { Operation:"INDEFERIR_SRM", Description:"Não Aprovar SRM" , "DestinyState": "EMREVISÃO"}],       
+     
+      "Area": "BarraBotoesPDM"
+    },
+    {
+      "Id": 33,     
+      "SourceState": "CANCELAMENTOSOLICITADOPDM",
+      "Transitions": [{ Operation:"INDEFERIR_PEDIDO_CANCELA_PDM", Description:"Recusar Cancelamento" , "DestinyState": "None"}],       
+     
+      "Area": "BarraBotoesPDM"
+    },
+    {
+      "Id": 34,     
+      "SourceState": "EMANALISE",
+      "Transitions": [{ Operation:"ASSOCIAR_PAD", Description:"Associar PAD" , "DestinyState": "PADGERADO"},					  
+					  { Operation:"RevisarPDM", Description:"Revisar SRM" , "DestinyState": "EMREVISÃO"}],       
+          
+      "Area": "BarraBotoesPDM"
+    },   
+    {
+      "Id": 36,     
+      "SourceState": "EMRASCUNHO",
+	  "StateOrder": "Initial",
+      "Transitions": [{ Operation:"PedirAprovarPDM", Description:"Solicitar Aprovação" , "DestinyState": "AGUARDANDOAPROVAÇÃO"},
+					  { Operation:"CancelarRascunho", Description:"Apagar Rascunho" , "DestinyState": "None"}],        
+              
+      "Area": "BarraBotoesPDM"
+    },
+    {
+      "Id": 38,      
+      "SourceState": "EMREVISÃO",
+      "Transitions": [{ Operation:"PedirAprovarPDM", Description:"Solicitar Aprovação" , "DestinyState": "AGUARDANDOAPROVAÇÃO"}],     
+    
+      "Area": "BarraBotoesPDM"
+    },
+    {
+      "Id": 39,      
+      "SourceState": "EMITIDO",
+      "Transitions": [{ "Condition": "!EXPORTACAO", Operation:"AssumirPDM", Description:"Assumir SRM" , "DestinyState": "EMANALISE"},
+					  { "Condition": "EXPORTACAO", Operation:"INICIO_ANALISE_EXPORTACAO", Description:"Assumir SRM" , "DestinyState": "ANALISESRMEXPORTAÇÃO"}],     
+         
+      "Area": "BarraBotoesPDM"
+    },
+	{
+	  "Id": 39,      
+      "SourceState": "All",
+	  "Transitions": [{ But:["EMRASCUNHO", "CANCELADOPDM", "CANCELAMENTOSOLICITADOPDM", "PROCESSOENCERRADO", "None"], Operation:"SOLICITAR_CANCELAMENTO", Description:"Solicitar Cancelamento" , "DestinyState": "CANCELAMENTOSOLICITADOPDM"}],
+	  "Area": "BarraBotoesPDM"
+	},
+    {
+      "Id": 40,     
+      "SourceState": "PADGERADO",
+	  "Transitions": [{ Operation:"ENCERRAR_PROCESSO", Description:"Encerrando SRM" , "DestinyState": "PROCESSOENCERRADO"}],     
+               
+      "Area": "BarraBotoesPDM"
+    },
+    {
+      "Id": 41,      
+      "SourceState": "AGUARDANDOQUESTIONÁRIO",
+	  "Transitions": [{"Condition": "EXPORTACAO", Operation:"RETORNAR_ANALISE_REXPORTACAO", Description:"Questionario Preenchido" , "DestinyState": "ANALISESRMEXPORTAÇÃO"}],     
+                 
+      "Area": "BarraBotoesPDM"
+    },
+    {
+      "Id": 42,      
+      "SourceState": "ANALISESRMEXPORTAÇÃO",
+      "Transitions": [{ "Condition": "EXPORTACAO", Operation:"RETORNAR_ANALISE", Description:"Retornar Análise" , "DestinyState": "EMANALISE"},
+					  { "Condition": "EXPORTACAO", Operation:"AGUADAR_QUESTIONARIO", Description:"Enviar Questionario" , "DestinyState": "AGUARDANDOQUESTIONÁRIO"}],     
+           
+      "Area": "BarraBotoesPDM"
+    },      
+    {
+      "Id": 46,
+      "Condition": null,
+      "SourceState": "All",
+	  "Transitions": [{ "But": ["EMITIDO","AGUARDANDOAPROVAÇÃO","PADGERADO", "None"], Operation:"ALTERAR_ITEM_PDM", Description:"Alterar Item" , "DestinyState": "None"},
+					  { "But": ["EMRASCUNHO","EMITIDO","AGUARDANDOAPROVAÇÃO","PADGERADO", "None"], "DestinyState": "None", "Operation": "CANCELAR_ITEM_PDM", "Description": "Cancelar Item" } ], 
+           
+      "Area": "GridPDM"
+    },
+    {
+      "Id": 47,     
+      "SourceState": "EMRASCUNHO",
+      "Transitions": [{ Operation:"EXCLUIR_ITEM_PDM", Description:"Excluir Item" , "DestinyState": "None"}], 
+          
+      "Area": "GridPDM"
+    },   
+	{
+      "Id": 48,     
+      "SourceState": "All",
+      "Transitions": [{ Condition:"EHPARTE"  ,But:["CANCELADOPAD", "ENCERRADO"] , Operation:"ALTERAR_ITEM_PAD", Description:"Alterar Item" , "DestinyState": "None"},
+					  { Condition:"NAOMOVIMENTADO" ,But:["CANCELADOPAD", "ENCERRADO"] , Operation:"CANCELAR_ITEM_PAD", Description:"Cancelar Item" , "DestinyState": "None"}], 
+          
+      "Area": "GridPAD"
+    },   
+    {
+      "Id": 49,     
+      "SourceState": "All",
+	  "Transitions": [{ "But": ["AGUARDAMOVIMENTAÇÃO","AGUARDANDOIDENTIFICAÇÃO","CANCELAMENTOSOLICITADOPAD",
+			  "DIVERGENTE","EMVISTORIA","MOVIMENTAÇÃOAUTORIZADA", "PADANALISANDOINDEFERIMENTO" ,
+			  "PADEMITIDO", "PROTOCOLAPADRECEITA", "ENCERRADO", "CANCELADOPAD", "None"],
+						"DestinyState": "None",
+						"Operation": "LIBERAR_MOVIMENTACAO",
+						"Description": "Movimentar Itens"},
+
+			{ Condition:"EXTINCAO",  "But": ["AGUARDAMOVIMENTAÇÃO","AGUARDANDOIDENTIFICAÇÃO","CANCELAMENTOSOLICITADOPAD",
+			  "DIVERGENTE","EMVISTORIA","MOVIMENTAÇÃOAUTORIZADA", "PADANALISANDOINDEFERIMENTO" ,
+			  "PADEMITIDO", "PROTOCOLAPADRECEITA", "ENCERRADO", "CANCELADOPAD", "None"],
+					"DestinyState": "None",
+					"Operation": "LIBERAR_EXTINCAO",
+					"Description": "Extinguir Itens"}
+	  
+	  ],           
+      
+      "Area": "PADOperation"
+    }   
+  ]
+}
