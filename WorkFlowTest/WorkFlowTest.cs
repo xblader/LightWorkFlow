@@ -12,6 +12,7 @@ using WorkFlow.Context;
 using WorkFlow.DAO;
 using WorkFlow.Configuration;
 using WorkFlow.Movimentacao;
+using WorkFlow.Matching;
 
 namespace WorkFlowTest
 {
