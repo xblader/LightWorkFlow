@@ -8,7 +8,10 @@ namespace WorkFlow.Context
     public class WorkFlowContext
     {
         Dictionary<string, List<string>> parameter = new Dictionary<string, List<string>>();
-
+        public IWorkFlow WorkFlow { get; set; }
+        public string Area { get; set; }
+        public string SourceState { get; set; }
+        public string Operation { get; set; }
         public List<string> this[string index]
         {
             get

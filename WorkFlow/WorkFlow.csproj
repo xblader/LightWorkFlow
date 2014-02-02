@@ -77,8 +77,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BD\WorkFlowBD.cs" />
-    <Compile Include="Business\BusinessProcess\BpActivity.cs" />
-    <Compile Include="Business\Search\SearchMode.cs" />
+    <Compile Include="Movimentacao\ConditionMatchDefault.cs" />
+    <Compile Include="Search\SearchMode.cs" />
     <Compile Include="Configuration\WorkFlowConfiguration.cs" />
     <Compile Include="Configuration\WorkFlowSettings.cs" />
     <Compile Include="Context\WorkFlowContext.cs" />
@@ -97,6 +97,10 @@
     <Compile Include="Exceptions\TypeNameNotFoundException.cs" />
     <Compile Include="Exceptions\WorkFlowNotFoundException.cs" />
     <Compile Include="IWorkFlow.cs" />
+    <Compile Include="Movimentacao\BreathStrategy.cs" />
+    <Compile Include="Movimentacao\DepthStrategy.cs" />
+    <Compile Include="Movimentacao\IConditionMatch.cs" />
+    <Compile Include="Movimentacao\IRunner.cs" />
     <Compile Include="Movimentacao\WorkFlowImpl.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Singleton\WorkFlowSingleton.cs" />

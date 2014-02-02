@@ -12,12 +12,13 @@ namespace WorkFlow
 {
     public interface IWorkFlow
     {
-        string GetNextStatus(string area, string operacao, string statusOrigem = null, WorkFlowContext context = null);
+        Structure GetNode();
+        string GetNextStatus(WorkFlowContext context);
         string GetInitialStatus(string tipo);
-        IList<Activity> GetActivities(string origem, string area, WorkFlowContext context = null, IControlAccess access = null);
+        IList<Activity> GetActivities(WorkFlowContext context, IControlAccess access = null);
         IList<string> ListAreas();
-        object Run(string area, WorkFlowContext context, SearchMode mode, IVisitor visitor = null);
-        string GetActivityDescription(string operacao);
+        object Run(WorkFlowContext context, SearchMode mode, IVisitor visitor = null);
+        string GetActivityDescription(string operation);
         bool Validate(byte[] workflow);
     }
 }
