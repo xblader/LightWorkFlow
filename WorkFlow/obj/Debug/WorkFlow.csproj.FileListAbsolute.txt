@@ -1,6 +1,0 @@
-C:\Users\victor\Documents\GitHub\LightWorkFlow\WorkFlow\bin\Debug\WorkFlowMachine.dll
-C:\Users\victor\Documents\GitHub\LightWorkFlow\WorkFlow\bin\Debug\WorkFlowMachine.pdb
-C:\Users\victor\Documents\GitHub\LightWorkFlow\WorkFlow\bin\Debug\Newtonsoft.Json.dll
-C:\Users\victor\Documents\GitHub\LightWorkFlow\WorkFlow\bin\Debug\Newtonsoft.Json.xml
-C:\Users\victor\Documents\GitHub\LightWorkFlow\WorkFlow\obj\Debug\WorkFlowMachine.dll
-C:\Users\victor\Documents\GitHub\LightWorkFlow\WorkFlow\obj\Debug\WorkFlowMachine.pdb
