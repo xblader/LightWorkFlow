@@ -12,7 +12,7 @@ namespace WorkFlow.Visitors
 
         public virtual void Visit(string status, Entities.Activity activity, string novostatus)
         {
-            transitions.Add(status);
+            transitions.Add(string.Format("{0}=={1}==>{2}", status, activity.Operation, novostatus));
         }
 
         public virtual object EndVisit()
