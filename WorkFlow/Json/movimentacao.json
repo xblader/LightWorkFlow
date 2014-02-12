@@ -104,7 +104,7 @@
     {
       "Id": 10,      
       "SourceState": "WAITMOVEMENTDESTINY",
-	  "Transitions": [{ Condition:"!EXTINCION", Operation:"PURCHASEORDER_CONFIRM_CHEGADA_DESTINY", Description:"Confirm chegada" , "DestinyState": "WAITRETURN"},					  
+	  "Transitions": [{ Condition:"!EXTINCION", Operation:"PURCHASEORDER_CONFIRM_ARRIVE_DESTINY", Description:"Confirm chegada" , "DestinyState": "WAITRETURN"},					  
 					  { Condition: "EXTINCION", Operation:"PROTOCOLR_REQUIREMENT", Description:"Protocolar Requerimento" , "DestinyState": "PROTOCOLREQUIREMENT"}],    
       "Area": "AreaPURCHASEORDER"
     },
@@ -199,7 +199,7 @@
       "Id": 31,     
       "SourceState": "PROTOCOLREQUIREMENT",
       "Transitions": [{ Condition: "DESTRUCTION", Operation:"WAITR_DESTRUCTION", Description:"Aguardar Destruição" , "DestinyState": "WAITINGDESTRUCTION"},
-					  { Condition: "!DESTRUCTION", Operation:"PURCHASEORDER_CONFIRM_CHEGADA_DESTINY", Description:"Confimar Chegada" , "DestinyState": "WAITRETURN"}],
+					  { Condition: "!DESTRUCTION", Operation:"PURCHASEORDER_CONFIRM_ARRIVE_DESTINY", Description:"Confimar Chegada" , "DestinyState": "WAITRETURN"}],
            
       "Area": "AreaPURCHASEORDER"
     },

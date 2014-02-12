@@ -33,7 +33,7 @@ namespace WorkFlowClient
 
             WorkFlowContext context = new WorkFlowContext {                 
                  Area = "AreaPURCHASEORDER",
-                 Operation = "PURCHASEORDER_CONFIRM_CHEGADA_DESTINY",
+                 Operation = "PURCHASEORDER_CONFIRM_ARRIVE_DESTINY",
                  SourceState = "WAITMOVEMENTDESTINY"
             }.SetCondition(typeof(NewMatch));
 
