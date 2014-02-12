@@ -214,7 +214,7 @@
     {
       "Id": 33,     
       "SourceState": "CANCELASKEDPURCHASEASK",
-      "Transitions": [{ Operation:"INDEFERIR_PEDIDO_CANCELA_PURCHASEASK", Description:"Recusar Cancelamento" , "DestinyState": "None"}],       
+      "Transitions": [{ Operation:"INDEFERIR_PEDIDO_CANCELA_PURCHASEASK", Description:"Recusar Cancelling" , "DestinyState": "None"}],       
      
       "Area": "AreaPURCHASEASK"
     },
@@ -253,7 +253,7 @@
 	{
 	  "Id": 39,      
       "SourceState": "All",
-	  "Transitions": [{ But:["ATDRAFT", "CANCELLEDPURCHASEASK", "CANCELASKEDPURCHASEASK", "PROCESSFINISHED", "None"], Operation:"SOLICITAR_CANCEL", Description:"Ask Cancelamento" , "DestinyState": "CANCELASKEDPURCHASEASK"}],
+	  "Transitions": [{ But:["ATDRAFT", "CANCELLEDPURCHASEASK", "CANCELASKEDPURCHASEASK", "PROCESSFINISHED", "None"], Operation:"SOLICITAR_CANCEL", Description:"Ask Cancelling" , "DestinyState": "CANCELASKEDPURCHASEASK"}],
 	  "Area": "AreaPURCHASEASK"
 	},
     {
