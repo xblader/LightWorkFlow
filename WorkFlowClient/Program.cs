@@ -27,9 +27,13 @@ namespace WorkFlowClient
                 .AddArea("AreaPURCHASEASK")
                 .AddSourceState("ATDRAFT");
 
-            IList<string> depth = (IList<string>)work.Run(workc, SearchMode.Depth);
+            var depth = work.Run(workc, SearchMode.Depth);
 
-            IList<string> breadth = (IList<string>)work.Run(workc, SearchMode.Breadth);
+            work.GetContext()
+                .AddArea("AreaPURCHASEASK")
+                .AddSourceState("ATDRAFT");
+
+            var breadth = (IList<string>)work.Run(workc, SearchMode.Breadth);
 
             WorkFlowContext context = new WorkFlowContext {                 
                  Area = "AreaPURCHASEORDER",
