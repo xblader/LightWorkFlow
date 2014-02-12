@@ -100,7 +100,7 @@ namespace WorkFlowTest
         {
             WorkFlowContext context = work.GetContext();
 
-            context["Objective"] = new List<string> { "3" };//destruicao
+            context["Objective"] = new List<string> { "3" };//destruction
             context["Departament"] = new List<string> { "1" };
             Assert.IsTrue(context.Match.CheckConditions("DESTRUCTION", context));
         }
@@ -167,14 +167,14 @@ namespace WorkFlowTest
         public void ConditionMatchAndStatusAllTogetherStatusNotInBut()
         {
             WorkFlowContext context = work.GetContext().AddElements("WAITMOVEMENTDESTINY", "PURCHASEORDEROperation");
-            context["Objective"] = new List<string> { "3" };//destruicao
+            context["Objective"] = new List<string> { "3" };//destruction
             context["Departament"] = new List<string> { "1" };
             IList<Activity> lista = work.GetActivities(context);
             Assert.IsTrue(lista.Count == 2 && lista.Any(x => x.Operation.Equals("RELEASE_EXTINCION")));
         }
 
         [TestMethod]
-        public void ImprimePURCHASEORDERParaDeposito()
+        public void PrintPURCHASEORDERParaDeposit()
         {
             WorkFlowContext context = work.GetContext().AddElements("PURCHASEORDEREMITTED", "AreaPURCHASEORDER");
             context["Objective"] = new List<string> { "2" };//deposito
@@ -186,10 +186,10 @@ namespace WorkFlowTest
         }
 
         [TestMethod]
-        public void ImprimePURCHASEORDERParaDestruicao()
+        public void PrintPURCHASEORDERParaDestruction()
         {
             WorkFlowContext context = work.GetContext().AddElements("PURCHASEORDEREMITTED", "AreaPURCHASEORDER");
-            context["Objective"] = new List<string> { "3" };//destruicao
+            context["Objective"] = new List<string> { "3" };//destruction
             context["Departament"] = new List<string> { "2" };
 
             var lista = (List<string>)work.Run(context, SearchMode.Breadth, new ListVisitor());
@@ -200,10 +200,10 @@ namespace WorkFlowTest
       
 
         [TestMethod]
-        public void ImprimePURCHASEASKParaReexportacao()
+        public void PrintPURCHASEASKParaReexportation()
         {
             WorkFlowContext context = work.GetContext().AddElements("ATDRAFT", "AreaPURCHASEASK");
-            context["Objective"] = new List<string> { "4" };//Reexportacao
+            context["Objective"] = new List<string> { "4" };//Reexportation
             context["Departament"] = new List<string> { "2" };
 
             var lista = (List<string>)work.Run(context, SearchMode.Depth, new ListVisitor());
@@ -212,10 +212,10 @@ namespace WorkFlowTest
         }
 
         [TestMethod]
-        public void ImprimePURCHASEASKParaDeposito()
+        public void PrintPURCHASEASKParaDeposit()
         {
             WorkFlowContext context = work.GetContext().AddElements("ATDRAFT", "AreaPURCHASEASK");
-            context["Objective"] = new List<string> { "2" };//Reexportacao
+            context["Objective"] = new List<string> { "2" };//Reexportation
             context["Departament"] = new List<string> { "2" };
 
             var lista = (List<string>)work.Run(context, SearchMode.Breadth, new ListVisitor());
@@ -224,10 +224,10 @@ namespace WorkFlowTest
         }
 
         [TestMethod]
-        public void ImprimePURCHASEASKParaDepositoInWidth()
+        public void PrintPURCHASEASKParaDepositInWidth()
         {
             WorkFlowContext context = work.GetContext().AddElements("ATDRAFT", "AreaPURCHASEASK");
-            context["Objective"] = new List<string> { "2" };//Reexportacao
+            context["Objective"] = new List<string> { "2" };//Reexportation
             context["Departament"] = new List<string> { "2" };
 
             var lista = (List<string>)work.Run(context, SearchMode.Breadth, new ListVisitor());
@@ -236,7 +236,7 @@ namespace WorkFlowTest
         }
 
         [TestMethod]
-        public void ImprimePURCHASEASKParaDepositContext()
+        public void PrintPURCHASEASKParaDepositContext()
         {
             WorkFlowContext context = work.GetContext().AddElements("ATDRAFT", "AreaPURCHASEASK");
             context["Objective"] = new List<string> { "2" };//deposito
