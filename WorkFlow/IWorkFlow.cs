@@ -13,11 +13,11 @@ namespace WorkFlow
     public interface IWorkFlow
     {
         string GetNextStatus(WorkFlowContext context);
-        string GetInitialStatus(string tipo);
+        string GetInitialStatus(string area);
         IList<Activity> GetActivities(WorkFlowContext context, IControlAccess access = null);
         IList<string> ListAreas();
         object Run(WorkFlowContext context, SearchMode mode, IVisitor visitor = null);
-        string GetActivityDescription(string operacao);
+        string GetActivityDescription(string operation);
         WorkFlowContext GetContext();
     }
 }

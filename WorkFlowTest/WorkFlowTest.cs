@@ -31,6 +31,13 @@ namespace WorkFlowTest
         }
 
         [TestMethod]
+        public void GeInitialStatus()
+        {
+            string initial = work.GetInitialStatus("AreaPURCHASEASK");
+            Assert.AreEqual("ATDRAFT", initial);
+        }
+
+        [TestMethod]
         public void GetNextStatus()
         {
             WorkFlowContext context = work.GetContext().AddArea("AreaPURCHASEASK")
