@@ -24,7 +24,7 @@ namespace WorkFlowClient
 
             IWorkFlow work = WorkFlowManager.GetManager();
             WorkFlowContext workc = work.GetContext()
-                .AddArea("BarraBotoesPURCHASEASK")
+                .AddArea("AreaPURCHASEASK")
                 .AddSourceState("EMRASCUNHO");
 
             IList<string> depth = (IList<string>)work.Run(workc, SearchMode.Depth);
@@ -32,7 +32,7 @@ namespace WorkFlowClient
             IList<string> breadth = (IList<string>)work.Run(workc, SearchMode.Breadth);
 
             WorkFlowContext context = new WorkFlowContext {                 
-                 Area = "BarraBotoesPURCHASEORDER",
+                 Area = "AreaPURCHASEORDER",
                  Operation = "PURCHASEORDER_CONFIRMAR_CHEGADA_DESTINO",
                  SourceState = "AGUARDAMOVIMENTAÇÃODESTINO"
             }.SetCondition(typeof(NewMatch));
