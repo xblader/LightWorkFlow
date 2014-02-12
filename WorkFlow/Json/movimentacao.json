@@ -78,10 +78,10 @@
       "Id": 1,      
       "SourceState": "None",   
 	  "Transitions": [{ Operation:"CANCEL_ASKED", Description:"None" , "DestinyState": "CANCELASKEDPURCHASEASK"},
-					  { Operation:"ATUALIZA_PURCHASEASK_CANCEL", Description:"None" , "DestinyState": "PURCHASEORDERGERADO"},
+					  { Operation:"ATUALIZA_PURCHASEASK_CANCEL", Description:"None" , "DestinyState": "PURCHASEORDERCREATED"},
 					  { Operation:"PURCHASEORDER_CHECK_MATERIAL", Description:"None" , "DestinyState": "ATCHECKING"},
 					  { Operation:"LAST_ITEM_CANCELLED_PURCHASEASK", Description:"None" , "DestinyState": "CANCELLEDPURCHASEASK"},
-					  { Operation:"ITEM_CANCELLED_PURCHASEORDER", Description:"None" , "DestinyState": "EMANALISE"},
+					  { Operation:"ITEM_CANCELLED_PURCHASEORDER", Description:"None" , "DestinyState": "ATANALYSIS"},
 					  { Operation:"CancelPURCHASEASK", Description:"None" , "DestinyState": "CANCELLEDPURCHASEASK"},
 					  { Operation:"LAST_ITEM_CANCELLED_PURCHASEORDER", Description:"None" , "DestinyState": "CANCELLEDPURCHASEORDER"},
 					  { Operation:"CANCEL_ASKED_PURCHASEORDER", Description:"None" , "DestinyState": "CANCELASKEDPURCHASEORDER"}],   
@@ -91,7 +91,7 @@
 	{
       "Id": 2,     
       "SourceState": "All",
-	  "Transitions": [{ But:["CANCELLEDPURCHASEORDER", "FINISHED", "None"], Operation:"PURCHASEORDER_CANCELAR", Description:"Cancel PURCHASEORDER" , "DestinyState": "CANCELLEDPURCHASEORDER"}],           
+	  "Transitions": [{ But:["CANCELLEDPURCHASEORDER", "FINISHED", "None"], Operation:"PURCHASEORDER_CANCEL", Description:"Cancel PURCHASEORDER" , "DestinyState": "CANCELLEDPURCHASEORDER"}],           
       "Area": "AreaPURCHASEORDER"
     },  			  
     {
@@ -149,8 +149,8 @@
     {
       "Id": 18,     
       "SourceState": "ATCHECKING",
-      "Transitions": [{ Operation:"WAITING_IDENTIFICACAO", Description:"Solicitar Apoio Técnico" , "DestinyState": "WAITINGIDENTIFICATION"},
-					  { Operation:"PURCHASEORDER_DIFFERENT_ALTERAR", Description:"Informar Divergência" , "DestinyState": "DIFFERENT"},
+      "Transitions": [{ Operation:"WAITING_IDENTIFICACAO", Description:"Ask Apoio Técnico" , "DestinyState": "WAITINGIDENTIFICATION"},
+					  { Operation:"PURCHASEORDER_DIFFERENT_ALTER", Description:"Informar Divergência" , "DestinyState": "DIFFERENT"},
 					  { Operation:"PURCHASEORDER_CHECK_MATERIAL", Description:"Concluir Vistoria" , "DestinyState": "WAITMOVEMENTDESTINY"}	],
     
       "Area": "AreaPURCHASEORDER"
@@ -158,16 +158,16 @@
     {
       "Id": 21,      
       "SourceState": "MOVEMENTALLOWED",
-      "Transitions": [{ Operation:"PURCHASEORDER_DESEMBARCAR_MATERIAL", Description:"Movimentar Material" , "DestinyState": "WAITMOVEMENT"},
+      "Transitions": [{ Operation:"PURCHASEORDER_DESEMBARCAR_MATERIAL", Description:"Move Material" , "DestinyState": "WAITMOVEMENT"},
 					  { Operation:"ASSOCIATE_RT", Description:"Associate RT" , "DestinyState": "None"}],
      
       "Area": "AreaPURCHASEORDER"
     },   
     {
       "Id": 23,      
-      "SourceState": "PURCHASEORDERANALISANDOINDEFERIMENTO",
+      "SourceState": "PURCHASEORDERANALYZINGREJECTION",
       "Transitions": [{ Operation:"PURCHASEORDER_PROTOCOLR_BUDGET", Description:"Protocolar na Receita" , "DestinyState": "PROTOCOLPURCHASEORDERBUDGET"},
-					  { Operation:"PURCHASEORDER_CANCELAR", Description:"Cancel PURCHASEORDER" , "DestinyState": "CANCELLEDPURCHASEORDER"}],
+					  { Operation:"PURCHASEORDER_CANCEL", Description:"Cancel PURCHASEORDER" , "DestinyState": "CANCELLEDPURCHASEORDER"}],
       
       "Area": "AreaPURCHASEORDER"
     },    
@@ -183,7 +183,7 @@
     {
       "Id": 26,     
       "SourceState": "PROTOCOLPURCHASEORDERBUDGET",
-      "Transitions": [{ Operation:"PURCHASEORDER_INDEFERIR_BUDGET", Description:"Indeferir PURCHASEORDER na Receita" , "DestinyState": "PURCHASEORDERANALISANDOINDEFERIMENTO"},
+      "Transitions": [{ Operation:"PURCHASEORDER_INDEFERIR_BUDGET", Description:"Indeferir PURCHASEORDER na Receita" , "DestinyState": "PURCHASEORDERANALYZINGREJECTION"},
 					  { Operation:"PURCHASEORDER_PERMIT_DESEMBARQUE", Description:"Autorizar Desembarque" , "DestinyState": "MOVEMENTALLOWED"}],
      
       "Area": "AreaPURCHASEORDER"
@@ -191,7 +191,7 @@
     {
       "Id": 30,      
       "SourceState": "FINISHEDPROCESS",
-      "Transitions": [{ Condition: "DESTRUCTION", Operation:"ENCERRAR_DESTRUCTION", Description:"Encerrar Destruição" , "DestinyState": "FINISHED"}],
+      "Transitions": [{ Condition: "DESTRUCTION", Operation:"FINISH_DESTRUCTION", Description:"Encerrar Destruição" , "DestinyState": "FINISHED"}],
             
       "Area": "AreaPURCHASEORDER"
     },
@@ -207,7 +207,7 @@
       "Id": 32,     
       "SourceState": "WAITINGALLOW",     
 	  "Transitions": [{ Operation:"EmitPURCHASEASK", Description:"Emit PURCHASEASK" , "DestinyState": "EMITTED"},
-					  { Operation:"INDEFERIR_PURCHASEASK", Description:"Não Aprovar PURCHASEASK" , "DestinyState": "ATREVISION"}],       
+					  { Operation:"INDEFERIR_PURCHASEASK", Description:"Não Aprove PURCHASEASK" , "DestinyState": "ATREVISION"}],       
      
       "Area": "AreaPURCHASEASK"
     },
@@ -220,61 +220,61 @@
     },
     {
       "Id": 34,     
-      "SourceState": "EMANALISE",
-      "Transitions": [{ Operation:"ASSOCIATER_PURCHASEORDER", Description:"Associate PURCHASEORDER" , "DestinyState": "PURCHASEORDERGERADO"},					  
-					  { Operation:"RevisarPURCHASEASK", Description:"Revisar PURCHASEASK" , "DestinyState": "ATREVISION"}],       
+      "SourceState": "ATANALYSIS",
+      "Transitions": [{ Operation:"ASSOCIATE_PURCHASEORDER", Description:"Associate PURCHASEORDER" , "DestinyState": "PURCHASEORDERCREATED"},					  
+					  { Operation:"CorrectPURCHASEASK", Description:"Correct PURCHASEASK" , "DestinyState": "ATREVISION"}],       
           
       "Area": "AreaPURCHASEASK"
     },   
     {
       "Id": 36,     
-      "SourceState": "EMRASCUNHO",
+      "SourceState": "ATDRAFT",
 	  "StateOrder": "Initial",
-      "Transitions": [{ Operation:"PedirAprovarPURCHASEASK", Description:"Solicitar Aprovação" , "DestinyState": "WAITINGALLOW"},
-					  { Operation:"CancelRascunho", Description:"Apagar Rascunho" , "DestinyState": "None"}],        
+      "Transitions": [{ Operation:"AskAprovePURCHASEASK", Description:"Ask Aproving" , "DestinyState": "WAITINGALLOW"},
+					  { Operation:"CancelDraft", Description:"Erase Draft" , "DestinyState": "None"}],        
               
       "Area": "AreaPURCHASEASK"
     },
     {
       "Id": 38,      
       "SourceState": "ATREVISION",
-      "Transitions": [{ Operation:"PedirAprovarPURCHASEASK", Description:"Solicitar Aprovação" , "DestinyState": "WAITINGALLOW"}],     
+      "Transitions": [{ Operation:"AskAprovePURCHASEASK", Description:"Ask Aproving" , "DestinyState": "WAITINGALLOW"}],     
     
       "Area": "AreaPURCHASEASK"
     },
     {
       "Id": 39,      
       "SourceState": "EMITTED",
-      "Transitions": [{ "Condition": "!EXPORTATION", Operation:"AssumirPURCHASEASK", Description:"Assumir PURCHASEASK" , "DestinyState": "EMANALISE"},
-					  { "Condition": "EXPORTATION", Operation:"INICIO_ANALISE_EXPORTATION", Description:"Assumir PURCHASEASK" , "DestinyState": "ANALISEPURCHASEASKEXPORTAÇÃO"}],     
+      "Transitions": [{ "Condition": "!EXPORTATION", Operation:"TakePURCHASEASK", Description:"Take PURCHASEASK" , "DestinyState": "ATANALYSIS"},
+					  { "Condition": "EXPORTATION", Operation:"INICIO_ANALYSIS_EXPORTATION", Description:"Take PURCHASEASK" , "DestinyState": "ANALYSISPURCHASEASKEXPORTAÇÃO"}],     
          
       "Area": "AreaPURCHASEASK"
     },
 	{
 	  "Id": 39,      
       "SourceState": "All",
-	  "Transitions": [{ But:["EMRASCUNHO", "CANCELLEDPURCHASEASK", "CANCELASKEDPURCHASEASK", "PROCESSFINISHED", "None"], Operation:"SOLICITAR_CANCEL", Description:"Solicitar Cancelamento" , "DestinyState": "CANCELASKEDPURCHASEASK"}],
+	  "Transitions": [{ But:["ATDRAFT", "CANCELLEDPURCHASEASK", "CANCELASKEDPURCHASEASK", "PROCESSFINISHED", "None"], Operation:"SOLICITAR_CANCEL", Description:"Ask Cancelamento" , "DestinyState": "CANCELASKEDPURCHASEASK"}],
 	  "Area": "AreaPURCHASEASK"
 	},
     {
       "Id": 40,     
-      "SourceState": "PURCHASEORDERGERADO",
-	  "Transitions": [{ Operation:"ENCERRAR_PROCESS", Description:"Encerrando PURCHASEASK" , "DestinyState": "PROCESSFINISHED"}],     
+      "SourceState": "PURCHASEORDERCREATED",
+	  "Transitions": [{ Operation:"FINISH_PROCESS", Description:"Encerrando PURCHASEASK" , "DestinyState": "PROCESSFINISHED"}],     
                
       "Area": "AreaPURCHASEASK"
     },
     {
       "Id": 41,      
       "SourceState": "WAITINGQUESTIONÁRIO",
-	  "Transitions": [{"Condition": "EXPORTATION", Operation:"RETURN_ANALISE_REXPORTATION", Description:"Questionario Preenchido" , "DestinyState": "ANALISEPURCHASEASKEXPORTAÇÃO"}],     
+	  "Transitions": [{"Condition": "EXPORTATION", Operation:"RETURN_ANALYSIS_REXPORTATION", Description:"Questionario Preenchido" , "DestinyState": "ANALYSISPURCHASEASKEXPORTAÇÃO"}],     
                  
       "Area": "AreaPURCHASEASK"
     },
     {
       "Id": 42,      
-      "SourceState": "ANALISEPURCHASEASKEXPORTAÇÃO",
-      "Transitions": [{ "Condition": "EXPORTATION", Operation:"RETURN_ANALISE", Description:"Retornar Análise" , "DestinyState": "EMANALISE"},
-					  { "Condition": "EXPORTATION", Operation:"AGUADAR_QUESTIONARIO", Description:"Enviar Questionario" , "DestinyState": "WAITINGQUESTIONÁRIO"}],     
+      "SourceState": "ANALYSISPURCHASEASKEXPORTAÇÃO",
+      "Transitions": [{ "Condition": "EXPORTATION", Operation:"RETURN_ANALYSIS", Description:"Retornar Análise" , "DestinyState": "ATANALYSIS"},
+					  { "Condition": "EXPORTATION", Operation:"AGUADAR_QUESTIONARY", Description:"Enviar Questionario" , "DestinyState": "WAITINGQUESTIONÁRIO"}],     
            
       "Area": "AreaPURCHASEASK"
     },      
@@ -282,23 +282,23 @@
       "Id": 46,
       "Condition": null,
       "SourceState": "All",
-	  "Transitions": [{ "But": ["EMITTED","WAITINGALLOW","PURCHASEORDERGERADO", "None"], Operation:"ALTERAR_ITEM_PURCHASEASK", Description:"Alterar Item" , "DestinyState": "None"},
-					  { "But": ["EMRASCUNHO","EMITTED","WAITINGALLOW","PURCHASEORDERGERADO", "None"], "DestinyState": "None", "Operation": "CANCELAR_ITEM_PURCHASEASK", "Description": "Cancel Item" } ], 
+	  "Transitions": [{ "But": ["EMITTED","WAITINGALLOW","PURCHASEORDERCREATED", "None"], Operation:"ALTER_ITEM_PURCHASEASK", Description:"Alterar Item" , "DestinyState": "None"},
+					  { "But": ["ATDRAFT","EMITTED","WAITINGALLOW","PURCHASEORDERCREATED", "None"], "DestinyState": "None", "Operation": "CANCEL_ITEM_PURCHASEASK", "Description": "Cancel Item" } ], 
            
       "Area": "GridPURCHASEASK"
     },
     {
       "Id": 47,     
-      "SourceState": "EMRASCUNHO",
-      "Transitions": [{ Operation:"EXCLUIR_ITEM_PURCHASEASK", Description:"Excluir Item" , "DestinyState": "None"}], 
+      "SourceState": "ATDRAFT",
+      "Transitions": [{ Operation:"EXCLUDE_ITEM_PURCHASEASK", Description:"Exclude Item" , "DestinyState": "None"}], 
           
       "Area": "GridPURCHASEASK"
     },   
 	{
       "Id": 48,     
       "SourceState": "All",
-      "Transitions": [{ Condition:"EHPARTE"  ,But:["CANCELLEDPURCHASEORDER", "FINISHED"] , Operation:"ALTERAR_ITEM_PURCHASEORDER", Description:"Alterar Item" , "DestinyState": "None"},
-					  { Condition:"NAOMOVED" ,But:["CANCELLEDPURCHASEORDER", "FINISHED"] , Operation:"CANCELAR_ITEM_PURCHASEORDER", Description:"Cancel Item" , "DestinyState": "None"}], 
+      "Transitions": [{ Condition:"EHPARTE"  ,But:["CANCELLEDPURCHASEORDER", "FINISHED"] , Operation:"ALTER_ITEM_PURCHASEORDER", Description:"Update Item" , "DestinyState": "None"},
+					  { Condition:"NAOMOVED" ,But:["CANCELLEDPURCHASEORDER", "FINISHED"] , Operation:"CANCEL_ITEM_PURCHASEORDER", Description:"Cancel Item" , "DestinyState": "None"}], 
           
       "Area": "GridPURCHASEORDER"
     },   
@@ -306,18 +306,18 @@
       "Id": 49,     
       "SourceState": "All",
 	  "Transitions": [{ "But": ["WAITMOVEMENT","WAITINGIDENTIFICATION","CANCELASKEDPURCHASEORDER",
-			  "DIFFERENT","ATCHECKING","MOVEMENTALLOWED", "PURCHASEORDERANALISANDOINDEFERIMENTO" ,
+			  "DIFFERENT","ATCHECKING","MOVEMENTALLOWED", "PURCHASEORDERANALYZINGREJECTION" ,
 			  "PURCHASEORDEREMITTED", "PROTOCOLPURCHASEORDERBUDGET", "FINISHED", "CANCELLEDPURCHASEORDER", "None"],
 						"DestinyState": "None",
-						"Operation": "LIBERAR_MOVIMENTACAO",
-						"Description": "Movimentar Itens"},
+						"Operation": "RELEASE_MOVIMENTACAO",
+						"Description": "Move Itens"},
 
 			{ Condition:"EXTINCION",  "But": ["WAITMOVEMENT","WAITINGIDENTIFICATION","CANCELASKEDPURCHASEORDER",
-			  "DIFFERENT","ATCHECKING","MOVEMENTALLOWED", "PURCHASEORDERANALISANDOINDEFERIMENTO" ,
+			  "DIFFERENT","ATCHECKING","MOVEMENTALLOWED", "PURCHASEORDERANALYZINGREJECTION" ,
 			  "PURCHASEORDEREMITTED", "PROTOCOLPURCHASEORDERBUDGET", "FINISHED", "CANCELLEDPURCHASEORDER", "None"],
 					"DestinyState": "None",
-					"Operation": "LIBERAR_EXTINCION",
-					"Description": "Extinguir Itens"}
+					"Operation": "RELEASE_EXTINCION",
+					"Description": "Extinguish Itens"}
 	  
 	  ],           
       

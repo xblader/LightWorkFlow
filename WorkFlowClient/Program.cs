@@ -25,7 +25,7 @@ namespace WorkFlowClient
             IWorkFlow work = WorkFlowManager.GetManager();
             WorkFlowContext workc = work.GetContext()
                 .AddArea("AreaPURCHASEASK")
-                .AddSourceState("EMRASCUNHO");
+                .AddSourceState("ATDRAFT");
 
             IList<string> depth = (IList<string>)work.Run(workc, SearchMode.Depth);
 

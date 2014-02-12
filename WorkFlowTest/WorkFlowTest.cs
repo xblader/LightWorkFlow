@@ -34,8 +34,8 @@ namespace WorkFlowTest
         public void GetNextStatus()
         {
             WorkFlowContext context = work.GetContext().AddArea("AreaPURCHASEASK")
-                                                        .AddOperation("PedirAprovarPURCHASEASK")
-                                                        .AddSourceState("EMRASCUNHO");
+                                                        .AddOperation("AskAprovePURCHASEASK")
+                                                        .AddSourceState("ATDRAFT");
             string status = work.GetNextStatus(context);
             Assert.AreEqual("WAITINGALLOW", status);
         }
@@ -48,7 +48,7 @@ namespace WorkFlowTest
                                                         .AddSourceState("EMITTED");
 
             context["Objective"] = new List<string> { "2" };//deposito
-            context["Orgao"] = new List<string> { "1" };
+            context["Departament"] = new List<string> { "1" };
             string status = work.GetNextStatus(context);
             Assert.AreEqual("CANCELASKEDPURCHASEASK", status);
         }
@@ -57,7 +57,7 @@ namespace WorkFlowTest
         public void GetAtivities()
         {
             WorkFlowContext context = work.GetContext().AddArea("AreaPURCHASEASK")                                                        
-                                                        .AddSourceState("EMRASCUNHO");
+                                                        .AddSourceState("ATDRAFT");
             IList<Activity> act = work.GetActivities(context);
             Assert.AreEqual(2, act.Count);
         }
@@ -78,21 +78,21 @@ namespace WorkFlowTest
         [TestMethod]
         public void GetAtivitiesGrid()
         {
-            work.GetContext().AddElements("EMRASCUNHO", "GridPURCHASEASK");
+            work.GetContext().AddElements("ATDRAFT", "GridPURCHASEASK");
             IList<Activity> act = work.GetActivities(work.GetContext());
             Assert.AreEqual(2, act.Count);
-            Assert.IsTrue(act.Any(x => x.Operation.Equals("ALTERAR_ITEM_PURCHASEASK")));
-            Assert.IsTrue(act.Any(x => x.Operation.Equals("EXCLUIR_ITEM_PURCHASEASK")));
+            Assert.IsTrue(act.Any(x => x.Operation.Equals("ALTER_ITEM_PURCHASEASK")));
+            Assert.IsTrue(act.Any(x => x.Operation.Equals("EXCLUDE_ITEM_PURCHASEASK")));
 
             work.GetContext().AddSourceState("EMITTED");
             IList<Activity> emitido = work.GetActivities(work.GetContext());
             Assert.AreEqual(0, emitido.Count);
 
-            work.GetContext().AddSourceState("EMANALISE");
+            work.GetContext().AddSourceState("ATANALYSIS");
             IList<Activity> analise = work.GetActivities(work.GetContext());
             Assert.AreEqual(2, analise.Count);
-            Assert.IsTrue(analise.Any(x => x.Operation.Equals("ALTERAR_ITEM_PURCHASEASK")));
-            Assert.IsTrue(analise.Any(x => x.Operation.Equals("CANCELAR_ITEM_PURCHASEASK")));
+            Assert.IsTrue(analise.Any(x => x.Operation.Equals("ALTER_ITEM_PURCHASEASK")));
+            Assert.IsTrue(analise.Any(x => x.Operation.Equals("CANCEL_ITEM_PURCHASEASK")));
         }
 
         [TestMethod]
@@ -101,7 +101,7 @@ namespace WorkFlowTest
             WorkFlowContext context = work.GetContext();
 
             context["Objective"] = new List<string> { "3" };//destruicao
-            context["Orgao"] = new List<string> { "1" };
+            context["Departament"] = new List<string> { "1" };
             Assert.IsTrue(context.Match.CheckConditions("DESTRUCTION", context));
         }
 
@@ -111,7 +111,7 @@ namespace WorkFlowTest
             WorkFlowContext context = work.GetContext();
 
             context["Objective"] = new List<string> { "2" };//deposito
-            context["Orgao"] = new List<string> { "1" };
+            context["Departament"] = new List<string> { "1" };
             Assert.IsFalse(context.Match.CheckConditions("DESTRUCTION", context));
         }
 
@@ -120,7 +120,7 @@ namespace WorkFlowTest
         {
             WorkFlowContext context = work.GetContext();
             context["Objective"] = new List<string> { "2" };//deposito
-            context["Orgao"] = new List<string> { "1" };
+            context["Departament"] = new List<string> { "1" };
             Assert.IsFalse(context.Match.CheckConditions("EXTINCION", context));
         }
 
@@ -130,17 +130,17 @@ namespace WorkFlowTest
             WorkFlowContext context = work.GetContext();
             context.AddElements("EMITTED", "AreaPURCHASEASK");
             context["Objective"] = new List<string> { "4" };//deposito
-            context["Orgao"] = new List<string> { "1" };
+            context["Departament"] = new List<string> { "1" };
             IList<Activity> lista = work.GetActivities(context);
-            Assert.IsTrue(lista.Count == 2 && lista.Any(x => x.Operation.Equals("INICIO_ANALISE_EXPORTATION")));
+            Assert.IsTrue(lista.Count == 2 && lista.Any(x => x.Operation.Equals("INICIO_ANALYSIS_EXPORTATION")));
             /*testing another condition*/
 
             WorkFlowContext context2 = work.GetContext();
             context2.AddElements("EMITTED", "AreaPURCHASEASK");
             context2["Objective"] = new List<string> { "2" };//deposito
-            context2["Orgao"] = new List<string> { "1" };
+            context2["Departament"] = new List<string> { "1" };
             IList<Activity> atividades = work.GetActivities(context2);
-            Assert.IsTrue(atividades.Count == 2 && atividades.Any(x => x.Operation.Equals("AssumirPURCHASEASK")));
+            Assert.IsTrue(atividades.Count == 2 && atividades.Any(x => x.Operation.Equals("TakePURCHASEASK")));
         }
 
         [TestMethod]
@@ -148,7 +148,7 @@ namespace WorkFlowTest
         {
             WorkFlowContext context = work.GetContext().AddElements("WAITMOVEMENT", "PURCHASEORDEROperation");
             context["Objective"] = new List<string> { "2" };//deposito
-            context["Orgao"] = new List<string> { "1" };
+            context["Departament"] = new List<string> { "1" };
             IList<Activity> lista = work.GetActivities(context);
             Assert.AreEqual(0, lista.Count);
         }
@@ -158,9 +158,9 @@ namespace WorkFlowTest
         {
             WorkFlowContext context = work.GetContext().AddElements("WAITMOVEMENTDESTINY", "PURCHASEORDEROperation");
             context["Objective"] = new List<string> { "2" };//deposito
-            context["Orgao"] = new List<string> { "1" };
+            context["Departament"] = new List<string> { "1" };
             IList<Activity> lista = work.GetActivities(context);
-            Assert.IsTrue(lista.Count == 1 && lista.Any(x => x.Operation.Equals("LIBERAR_MOVIMENTACAO")));
+            Assert.IsTrue(lista.Count == 1 && lista.Any(x => x.Operation.Equals("RELEASE_MOVIMENTACAO")));
         }
 
         [TestMethod]
@@ -168,9 +168,9 @@ namespace WorkFlowTest
         {
             WorkFlowContext context = work.GetContext().AddElements("WAITMOVEMENTDESTINY", "PURCHASEORDEROperation");
             context["Objective"] = new List<string> { "3" };//destruicao
-            context["Orgao"] = new List<string> { "1" };
+            context["Departament"] = new List<string> { "1" };
             IList<Activity> lista = work.GetActivities(context);
-            Assert.IsTrue(lista.Count == 2 && lista.Any(x => x.Operation.Equals("LIBERAR_EXTINCION")));
+            Assert.IsTrue(lista.Count == 2 && lista.Any(x => x.Operation.Equals("RELEASE_EXTINCION")));
         }
 
         [TestMethod]
@@ -178,11 +178,11 @@ namespace WorkFlowTest
         {
             WorkFlowContext context = work.GetContext().AddElements("PURCHASEORDEREMITTED", "AreaPURCHASEORDER");
             context["Objective"] = new List<string> { "2" };//deposito
-            context["Orgao"] = new List<string> { "2" };
+            context["Departament"] = new List<string> { "2" };
 
             var lista = (List<string>)work.Run(context, SearchMode.Depth, new ListVisitor());
             string transicoes = string.Join(",", lista.ToArray());
-            Assert.AreEqual("PURCHASEORDEREMITTED--[Autorizar Movement]-->MOVEMENTALLOWED ,MOVEMENTALLOWED--[Associate RT]-->None ,MOVEMENTALLOWED--[Cancel PURCHASEORDER]-->CANCELLEDPURCHASEORDER ,MOVEMENTALLOWED--[Movimentar Material]-->WAITMOVEMENT ,WAITMOVEMENT--[Associate RT]-->None ,WAITMOVEMENT--[Cancel PURCHASEORDER]-->CANCELLEDPURCHASEORDER ,WAITMOVEMENT--[Disponibilizar para Vistoria]-->ATCHECKING ,ATCHECKING--[Cancel PURCHASEORDER]-->CANCELLEDPURCHASEORDER ,ATCHECKING--[Informar Divergência]-->DIFFERENT ,DIFFERENT--[Cancel PURCHASEORDER]-->CANCELLEDPURCHASEORDER ,DIFFERENT--[Confirm Acerto]-->ATCHECKING ,ATCHECKING--[Concluir Vistoria]-->WAITMOVEMENTDESTINY ,WAITMOVEMENTDESTINY--[Cancel PURCHASEORDER]-->CANCELLEDPURCHASEORDER ,WAITMOVEMENTDESTINY--[Confirm chegada]-->WAITRETURN ,WAITRETURN--[Cancel PURCHASEORDER]-->CANCELLEDPURCHASEORDER ,WAITRETURN--[Confirm Return]-->RETURNCONFIRMED ,RETURNCONFIRMED--[Confirmation de Finishing]-->FINISHED ,RETURNCONFIRMED--[Cancel PURCHASEORDER]-->CANCELLEDPURCHASEORDER ,ATCHECKING--[Solicitar Apoio Técnico]-->WAITINGIDENTIFICATION ,WAITINGIDENTIFICATION--[Cancel PURCHASEORDER]-->CANCELLEDPURCHASEORDER ,WAITINGIDENTIFICATION--[Informar apoio técnico]-->ATCHECKING ,DIFFERENT--[Informar Justificativa]-->MOVEMENTALLOWED ,PURCHASEORDEREMITTED--[Cancel PURCHASEORDER]-->CANCELLEDPURCHASEORDER ", transicoes);
+            Assert.AreEqual("PURCHASEORDEREMITTED--[Cancel PURCHASEORDER]-->CANCELLEDPURCHASEORDER ,PURCHASEORDEREMITTED--[Autorizar Movement]-->MOVEMENTALLOWED ,MOVEMENTALLOWED--[Associate RT]-->None ,MOVEMENTALLOWED--[Cancel PURCHASEORDER]-->CANCELLEDPURCHASEORDER ,MOVEMENTALLOWED--[Move Material]-->WAITMOVEMENT ,WAITMOVEMENT--[Associate RT]-->None ,WAITMOVEMENT--[Cancel PURCHASEORDER]-->CANCELLEDPURCHASEORDER ,WAITMOVEMENT--[Disponibilizar para Vistoria]-->ATCHECKING ,ATCHECKING--[Cancel PURCHASEORDER]-->CANCELLEDPURCHASEORDER ,ATCHECKING--[Concluir Vistoria]-->WAITMOVEMENTDESTINY ,WAITMOVEMENTDESTINY--[Cancel PURCHASEORDER]-->CANCELLEDPURCHASEORDER ,WAITMOVEMENTDESTINY--[Confirm chegada]-->WAITRETURN ,WAITRETURN--[Cancel PURCHASEORDER]-->CANCELLEDPURCHASEORDER ,WAITRETURN--[Confirm Return]-->RETURNCONFIRMED ,RETURNCONFIRMED--[Confirmation Finishing]-->FINISHED ,RETURNCONFIRMED--[Cancel PURCHASEORDER]-->CANCELLEDPURCHASEORDER ,ATCHECKING--[Informar Divergência]-->DIFFERENT ,DIFFERENT--[Cancel PURCHASEORDER]-->CANCELLEDPURCHASEORDER ,DIFFERENT--[Confirm Acerto]-->ATCHECKING ,ATCHECKING--[Ask Apoio Técnico]-->WAITINGIDENTIFICATION ,WAITINGIDENTIFICATION--[Cancel PURCHASEORDER]-->CANCELLEDPURCHASEORDER ,WAITINGIDENTIFICATION--[Informar apoio técnico]-->ATCHECKING ,DIFFERENT--[Informar Justificativa]-->MOVEMENTALLOWED ", transicoes);
         }
 
         [TestMethod]
@@ -190,11 +190,11 @@ namespace WorkFlowTest
         {
             WorkFlowContext context = work.GetContext().AddElements("PURCHASEORDEREMITTED", "AreaPURCHASEORDER");
             context["Objective"] = new List<string> { "3" };//destruicao
-            context["Orgao"] = new List<string> { "2" };
+            context["Departament"] = new List<string> { "2" };
 
             var lista = (List<string>)work.Run(context, SearchMode.Breadth, new ListVisitor());
             string transicoes = string.Join(",", lista.ToArray());
-            Assert.AreEqual("PURCHASEORDEREMITTED--[Autorizar Movement]-->MOVEMENTALLOWED ,PURCHASEORDEREMITTED--[Cancel PURCHASEORDER]-->CANCELLEDPURCHASEORDER ,MOVEMENTALLOWED--[Associate RT]-->None ,MOVEMENTALLOWED--[Cancel PURCHASEORDER]-->CANCELLEDPURCHASEORDER ,MOVEMENTALLOWED--[Movimentar Material]-->WAITMOVEMENT ,WAITMOVEMENT--[Associate RT]-->None ,WAITMOVEMENT--[Cancel PURCHASEORDER]-->CANCELLEDPURCHASEORDER ,WAITMOVEMENT--[Disponibilizar para Vistoria]-->ATCHECKING ,ATCHECKING--[Cancel PURCHASEORDER]-->CANCELLEDPURCHASEORDER ,ATCHECKING--[Informar Divergência]-->DIFFERENT ,ATCHECKING--[Concluir Vistoria]-->WAITMOVEMENTDESTINY ,ATCHECKING--[Solicitar Apoio Técnico]-->WAITINGIDENTIFICATION ,DIFFERENT--[Cancel PURCHASEORDER]-->CANCELLEDPURCHASEORDER ,DIFFERENT--[Confirm Acerto]-->ATCHECKING ,DIFFERENT--[Informar Justificativa]-->MOVEMENTALLOWED ,WAITMOVEMENTDESTINY--[Protocolar Requerimento]-->PROTOCOLREQUIREMENT ,WAITMOVEMENTDESTINY--[Cancel PURCHASEORDER]-->CANCELLEDPURCHASEORDER ,WAITINGIDENTIFICATION--[Cancel PURCHASEORDER]-->CANCELLEDPURCHASEORDER ,WAITINGIDENTIFICATION--[Informar apoio técnico]-->ATCHECKING ,PROTOCOLREQUIREMENT--[Cancel PURCHASEORDER]-->CANCELLEDPURCHASEORDER ,PROTOCOLREQUIREMENT--[Aguardar Destruição]-->WAITINGDESTRUCTION ,WAITINGDESTRUCTION--[Destruição Efetuada]-->FINISHEDPROCESS ,WAITINGDESTRUCTION--[Cancel PURCHASEORDER]-->CANCELLEDPURCHASEORDER ,FINISHEDPROCESS--[Encerrar Destruição]-->FINISHED ,FINISHEDPROCESS--[Cancel PURCHASEORDER]-->CANCELLEDPURCHASEORDER ", transicoes);
+            Assert.AreEqual("PURCHASEORDEREMITTED--[Cancel PURCHASEORDER]-->CANCELLEDPURCHASEORDER ,PURCHASEORDEREMITTED--[Autorizar Movement]-->MOVEMENTALLOWED ,MOVEMENTALLOWED--[Associate RT]-->None ,MOVEMENTALLOWED--[Cancel PURCHASEORDER]-->CANCELLEDPURCHASEORDER ,MOVEMENTALLOWED--[Move Material]-->WAITMOVEMENT ,WAITMOVEMENT--[Associate RT]-->None ,WAITMOVEMENT--[Cancel PURCHASEORDER]-->CANCELLEDPURCHASEORDER ,WAITMOVEMENT--[Disponibilizar para Vistoria]-->ATCHECKING ,ATCHECKING--[Cancel PURCHASEORDER]-->CANCELLEDPURCHASEORDER ,ATCHECKING--[Concluir Vistoria]-->WAITMOVEMENTDESTINY ,ATCHECKING--[Informar Divergência]-->DIFFERENT ,ATCHECKING--[Ask Apoio Técnico]-->WAITINGIDENTIFICATION ,WAITMOVEMENTDESTINY--[Protocolar Requerimento]-->PROTOCOLREQUIREMENT ,WAITMOVEMENTDESTINY--[Cancel PURCHASEORDER]-->CANCELLEDPURCHASEORDER ,DIFFERENT--[Cancel PURCHASEORDER]-->CANCELLEDPURCHASEORDER ,DIFFERENT--[Confirm Acerto]-->ATCHECKING ,DIFFERENT--[Informar Justificativa]-->MOVEMENTALLOWED ,WAITINGIDENTIFICATION--[Cancel PURCHASEORDER]-->CANCELLEDPURCHASEORDER ,WAITINGIDENTIFICATION--[Informar apoio técnico]-->ATCHECKING ,PROTOCOLREQUIREMENT--[Cancel PURCHASEORDER]-->CANCELLEDPURCHASEORDER ,PROTOCOLREQUIREMENT--[Aguardar Destruição]-->WAITINGDESTRUCTION ,WAITINGDESTRUCTION--[Destruição Efetuada]-->FINISHEDPROCESS ,WAITINGDESTRUCTION--[Cancel PURCHASEORDER]-->CANCELLEDPURCHASEORDER ,FINISHEDPROCESS--[Encerrar Destruição]-->FINISHED ,FINISHEDPROCESS--[Cancel PURCHASEORDER]-->CANCELLEDPURCHASEORDER ", transicoes);
         }
 
       
@@ -202,49 +202,49 @@ namespace WorkFlowTest
         [TestMethod]
         public void ImprimePURCHASEASKParaReexportacao()
         {
-            WorkFlowContext context = work.GetContext().AddElements("EMRASCUNHO", "AreaPURCHASEASK");
+            WorkFlowContext context = work.GetContext().AddElements("ATDRAFT", "AreaPURCHASEASK");
             context["Objective"] = new List<string> { "4" };//Reexportacao
-            context["Orgao"] = new List<string> { "2" };
+            context["Departament"] = new List<string> { "2" };
 
             var lista = (List<string>)work.Run(context, SearchMode.Depth, new ListVisitor());
             string transicoes = string.Join(",", lista.ToArray());
-            Assert.AreEqual("EMRASCUNHO--[Apagar Rascunho]-->None ,EMRASCUNHO--[Solicitar Aprovação]-->WAITINGALLOW ,WAITINGALLOW--[Emit PURCHASEASK]-->EMITTED ,EMITTED--[Assumir PURCHASEASK]-->ANALISEPURCHASEASKEXPORTAÇÃO ,ANALISEPURCHASEASKEXPORTAÇÃO--[Enviar Questionario]-->WAITINGQUESTIONÁRIO ,WAITINGQUESTIONÁRIO--[Questionario Preenchido]-->ANALISEPURCHASEASKEXPORTAÇÃO ,ANALISEPURCHASEASKEXPORTAÇÃO--[Retornar Análise]-->EMANALISE ,EMANALISE--[Associate PURCHASEORDER]-->PURCHASEORDERGERADO ,PURCHASEORDERGERADO--[Encerrando PURCHASEASK]-->PROCESSFINISHED ,PURCHASEORDERGERADO--[Solicitar Cancelamento]-->CANCELASKEDPURCHASEASK ,CANCELASKEDPURCHASEASK--[Recusar Cancelamento]-->None ,EMANALISE--[Revisar PURCHASEASK]-->ATREVISION ,ATREVISION--[Solicitar Aprovação]-->WAITINGALLOW ,WAITINGALLOW--[Não Aprovar PURCHASEASK]-->ATREVISION ,ATREVISION--[Solicitar Cancelamento]-->CANCELASKEDPURCHASEASK ,WAITINGALLOW--[Solicitar Cancelamento]-->CANCELASKEDPURCHASEASK ,EMANALISE--[Solicitar Cancelamento]-->CANCELASKEDPURCHASEASK ,ANALISEPURCHASEASKEXPORTAÇÃO--[Solicitar Cancelamento]-->CANCELASKEDPURCHASEASK ,WAITINGQUESTIONÁRIO--[Solicitar Cancelamento]-->CANCELASKEDPURCHASEASK ,EMITTED--[Solicitar Cancelamento]-->CANCELASKEDPURCHASEASK ", transicoes);
+            Assert.AreEqual("ATDRAFT--[Ask Aproving]-->WAITINGALLOW ,WAITINGALLOW--[Emit PURCHASEASK]-->EMITTED ,EMITTED--[Take PURCHASEASK]-->ANALYSISPURCHASEASKEXPORTAÇÃO ,ANALYSISPURCHASEASKEXPORTAÇÃO--[Enviar Questionario]-->WAITINGQUESTIONÁRIO ,WAITINGQUESTIONÁRIO--[Questionario Preenchido]-->ANALYSISPURCHASEASKEXPORTAÇÃO ,ANALYSISPURCHASEASKEXPORTAÇÃO--[Retornar Análise]-->ATANALYSIS ,ATANALYSIS--[Associate PURCHASEORDER]-->PURCHASEORDERCREATED ,PURCHASEORDERCREATED--[Encerrando PURCHASEASK]-->PROCESSFINISHED ,PURCHASEORDERCREATED--[Ask Cancelamento]-->CANCELASKEDPURCHASEASK ,CANCELASKEDPURCHASEASK--[Recusar Cancelamento]-->None ,ATANALYSIS--[Correct PURCHASEASK]-->ATREVISION ,ATREVISION--[Ask Aproving]-->WAITINGALLOW ,WAITINGALLOW--[Não Aprove PURCHASEASK]-->ATREVISION ,ATREVISION--[Ask Cancelamento]-->CANCELASKEDPURCHASEASK ,WAITINGALLOW--[Ask Cancelamento]-->CANCELASKEDPURCHASEASK ,ATANALYSIS--[Ask Cancelamento]-->CANCELASKEDPURCHASEASK ,ANALYSISPURCHASEASKEXPORTAÇÃO--[Ask Cancelamento]-->CANCELASKEDPURCHASEASK ,WAITINGQUESTIONÁRIO--[Ask Cancelamento]-->CANCELASKEDPURCHASEASK ,EMITTED--[Ask Cancelamento]-->CANCELASKEDPURCHASEASK ,ATDRAFT--[Erase Draft]-->None ", transicoes);
         }
 
         [TestMethod]
         public void ImprimePURCHASEASKParaDeposito()
         {
-            WorkFlowContext context = work.GetContext().AddElements("EMRASCUNHO", "AreaPURCHASEASK");
+            WorkFlowContext context = work.GetContext().AddElements("ATDRAFT", "AreaPURCHASEASK");
             context["Objective"] = new List<string> { "2" };//Reexportacao
-            context["Orgao"] = new List<string> { "2" };
+            context["Departament"] = new List<string> { "2" };
 
             var lista = (List<string>)work.Run(context, SearchMode.Breadth, new ListVisitor());
             string transicoes = string.Join(",", lista.ToArray());
-            Assert.AreEqual("EMRASCUNHO--[Apagar Rascunho]-->None ,EMRASCUNHO--[Solicitar Aprovação]-->WAITINGALLOW ,WAITINGALLOW--[Emit PURCHASEASK]-->EMITTED ,WAITINGALLOW--[Não Aprovar PURCHASEASK]-->ATREVISION ,WAITINGALLOW--[Solicitar Cancelamento]-->CANCELASKEDPURCHASEASK ,EMITTED--[Assumir PURCHASEASK]-->EMANALISE ,EMITTED--[Solicitar Cancelamento]-->CANCELASKEDPURCHASEASK ,ATREVISION--[Solicitar Aprovação]-->WAITINGALLOW ,ATREVISION--[Solicitar Cancelamento]-->CANCELASKEDPURCHASEASK ,CANCELASKEDPURCHASEASK--[Recusar Cancelamento]-->None ,EMANALISE--[Associate PURCHASEORDER]-->PURCHASEORDERGERADO ,EMANALISE--[Revisar PURCHASEASK]-->ATREVISION ,EMANALISE--[Solicitar Cancelamento]-->CANCELASKEDPURCHASEASK ,PURCHASEORDERGERADO--[Encerrando PURCHASEASK]-->PROCESSFINISHED ,PURCHASEORDERGERADO--[Solicitar Cancelamento]-->CANCELASKEDPURCHASEASK ", transicoes);
+            Assert.AreEqual("ATDRAFT--[Ask Aproving]-->WAITINGALLOW ,ATDRAFT--[Erase Draft]-->None ,WAITINGALLOW--[Emit PURCHASEASK]-->EMITTED ,WAITINGALLOW--[Não Aprove PURCHASEASK]-->ATREVISION ,WAITINGALLOW--[Ask Cancelamento]-->CANCELASKEDPURCHASEASK ,EMITTED--[Ask Cancelamento]-->CANCELASKEDPURCHASEASK ,EMITTED--[Take PURCHASEASK]-->ATANALYSIS ,ATREVISION--[Ask Aproving]-->WAITINGALLOW ,ATREVISION--[Ask Cancelamento]-->CANCELASKEDPURCHASEASK ,CANCELASKEDPURCHASEASK--[Recusar Cancelamento]-->None ,ATANALYSIS--[Associate PURCHASEORDER]-->PURCHASEORDERCREATED ,ATANALYSIS--[Correct PURCHASEASK]-->ATREVISION ,ATANALYSIS--[Ask Cancelamento]-->CANCELASKEDPURCHASEASK ,PURCHASEORDERCREATED--[Encerrando PURCHASEASK]-->PROCESSFINISHED ,PURCHASEORDERCREATED--[Ask Cancelamento]-->CANCELASKEDPURCHASEASK ", transicoes);
         }
 
         [TestMethod]
         public void ImprimePURCHASEASKParaDepositoInWidth()
         {
-            WorkFlowContext context = work.GetContext().AddElements("EMRASCUNHO", "AreaPURCHASEASK");
+            WorkFlowContext context = work.GetContext().AddElements("ATDRAFT", "AreaPURCHASEASK");
             context["Objective"] = new List<string> { "2" };//Reexportacao
-            context["Orgao"] = new List<string> { "2" };
+            context["Departament"] = new List<string> { "2" };
 
             var lista = (List<string>)work.Run(context, SearchMode.Breadth, new ListVisitor());
             string transicoes = string.Join(",", lista.ToArray());
-            Assert.AreEqual("EMRASCUNHO--[Apagar Rascunho]-->None ,EMRASCUNHO--[Solicitar Aprovação]-->WAITINGALLOW ,WAITINGALLOW--[Emit PURCHASEASK]-->EMITTED ,WAITINGALLOW--[Não Aprovar PURCHASEASK]-->ATREVISION ,WAITINGALLOW--[Solicitar Cancelamento]-->CANCELASKEDPURCHASEASK ,EMITTED--[Assumir PURCHASEASK]-->EMANALISE ,EMITTED--[Solicitar Cancelamento]-->CANCELASKEDPURCHASEASK ,ATREVISION--[Solicitar Aprovação]-->WAITINGALLOW ,ATREVISION--[Solicitar Cancelamento]-->CANCELASKEDPURCHASEASK ,CANCELASKEDPURCHASEASK--[Recusar Cancelamento]-->None ,EMANALISE--[Associate PURCHASEORDER]-->PURCHASEORDERGERADO ,EMANALISE--[Revisar PURCHASEASK]-->ATREVISION ,EMANALISE--[Solicitar Cancelamento]-->CANCELASKEDPURCHASEASK ,PURCHASEORDERGERADO--[Encerrando PURCHASEASK]-->PROCESSFINISHED ,PURCHASEORDERGERADO--[Solicitar Cancelamento]-->CANCELASKEDPURCHASEASK ", transicoes);
+            Assert.AreEqual("ATDRAFT--[Ask Aproving]-->WAITINGALLOW ,ATDRAFT--[Erase Draft]-->None ,WAITINGALLOW--[Emit PURCHASEASK]-->EMITTED ,WAITINGALLOW--[Não Aprove PURCHASEASK]-->ATREVISION ,WAITINGALLOW--[Ask Cancelamento]-->CANCELASKEDPURCHASEASK ,EMITTED--[Ask Cancelamento]-->CANCELASKEDPURCHASEASK ,EMITTED--[Take PURCHASEASK]-->ATANALYSIS ,ATREVISION--[Ask Aproving]-->WAITINGALLOW ,ATREVISION--[Ask Cancelamento]-->CANCELASKEDPURCHASEASK ,CANCELASKEDPURCHASEASK--[Recusar Cancelamento]-->None ,ATANALYSIS--[Associate PURCHASEORDER]-->PURCHASEORDERCREATED ,ATANALYSIS--[Correct PURCHASEASK]-->ATREVISION ,ATANALYSIS--[Ask Cancelamento]-->CANCELASKEDPURCHASEASK ,PURCHASEORDERCREATED--[Encerrando PURCHASEASK]-->PROCESSFINISHED ,PURCHASEORDERCREATED--[Ask Cancelamento]-->CANCELASKEDPURCHASEASK ", transicoes);
         }
 
         [TestMethod]
         public void ImprimePURCHASEASKParaDepositContext()
         {
-            WorkFlowContext context = work.GetContext().AddElements("EMRASCUNHO", "AreaPURCHASEASK");
+            WorkFlowContext context = work.GetContext().AddElements("ATDRAFT", "AreaPURCHASEASK");
             context["Objective"] = new List<string> { "2" };//deposito
-            context["Orgao"] = new List<string> { "2" };
+            context["Departament"] = new List<string> { "2" };
 
             var lista = (List<string>)work.Run(context, SearchMode.Breadth, new ListVisitor());
             string transicoes = string.Join(",", lista.ToArray());
-            Assert.AreEqual("EMRASCUNHO--[Apagar Rascunho]-->None ,EMRASCUNHO--[Solicitar Aprovação]-->WAITINGALLOW ,WAITINGALLOW--[Emit PURCHASEASK]-->EMITTED ,WAITINGALLOW--[Não Aprovar PURCHASEASK]-->ATREVISION ,WAITINGALLOW--[Solicitar Cancelamento]-->CANCELASKEDPURCHASEASK ,EMITTED--[Assumir PURCHASEASK]-->EMANALISE ,EMITTED--[Solicitar Cancelamento]-->CANCELASKEDPURCHASEASK ,ATREVISION--[Solicitar Aprovação]-->WAITINGALLOW ,ATREVISION--[Solicitar Cancelamento]-->CANCELASKEDPURCHASEASK ,CANCELASKEDPURCHASEASK--[Recusar Cancelamento]-->None ,EMANALISE--[Associate PURCHASEORDER]-->PURCHASEORDERGERADO ,EMANALISE--[Revisar PURCHASEASK]-->ATREVISION ,EMANALISE--[Solicitar Cancelamento]-->CANCELASKEDPURCHASEASK ,PURCHASEORDERGERADO--[Encerrando PURCHASEASK]-->PROCESSFINISHED ,PURCHASEORDERGERADO--[Solicitar Cancelamento]-->CANCELASKEDPURCHASEASK ", transicoes);
+            Assert.AreEqual("ATDRAFT--[Ask Aproving]-->WAITINGALLOW ,ATDRAFT--[Erase Draft]-->None ,WAITINGALLOW--[Emit PURCHASEASK]-->EMITTED ,WAITINGALLOW--[Não Aprove PURCHASEASK]-->ATREVISION ,WAITINGALLOW--[Ask Cancelamento]-->CANCELASKEDPURCHASEASK ,EMITTED--[Ask Cancelamento]-->CANCELASKEDPURCHASEASK ,EMITTED--[Take PURCHASEASK]-->ATANALYSIS ,ATREVISION--[Ask Aproving]-->WAITINGALLOW ,ATREVISION--[Ask Cancelamento]-->CANCELASKEDPURCHASEASK ,CANCELASKEDPURCHASEASK--[Recusar Cancelamento]-->None ,ATANALYSIS--[Associate PURCHASEORDER]-->PURCHASEORDERCREATED ,ATANALYSIS--[Correct PURCHASEASK]-->ATREVISION ,ATANALYSIS--[Ask Cancelamento]-->CANCELASKEDPURCHASEASK ,PURCHASEORDERCREATED--[Encerrando PURCHASEASK]-->PROCESSFINISHED ,PURCHASEORDERCREATED--[Ask Cancelamento]-->CANCELASKEDPURCHASEASK ", transicoes);
                    
         }
     }
