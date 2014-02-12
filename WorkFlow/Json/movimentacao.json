@@ -96,21 +96,21 @@
     },  			  
     {
       "Id": 8,     
-      "SourceState": "AGUARDAMOVIMENTAÇÃO",
+      "SourceState": "WAITMOVIMENTAÇÃO",
 	  "Transitions": [{ Operation:"PURCHASEORDER_DISPONOBILIZAR_VISTORIA", Description:"Disponibilizar para Vistoria" , "DestinyState": "EMVISTORIA"},
 					  { Operation:"ASSOCIA_RT", Description:"Associar RT" , "DestinyState": "None"}],           
       "Area": "AreaPURCHASEORDER"
     },   
     {
       "Id": 10,      
-      "SourceState": "AGUARDAMOVIMENTAÇÃODESTINO",
-	  "Transitions": [{ Condition:"!EXTINCAO", Operation:"PURCHASEORDER_CONFIRMAR_CHEGADA_DESTINO", Description:"Confirmar chegada" , "DestinyState": "AGUARDARETORNO"},					  
+      "SourceState": "WAITMOVIMENTAÇÃODESTINO",
+	  "Transitions": [{ Condition:"!EXTINCAO", Operation:"PURCHASEORDER_CONFIRMAR_CHEGADA_DESTINO", Description:"Confirmar chegada" , "DestinyState": "WAITRETORNO"},					  
 					  { Condition: "EXTINCAO", Operation:"PROTOCOLAR_REQUERIMENTO", Description:"Protocolar Requerimento" , "DestinyState": "PROTOCOLOREQUERIMENTO"}],    
       "Area": "AreaPURCHASEORDER"
     },
     {
       "Id": 11,     
-      "SourceState": "AGUARDARETORNO",
+      "SourceState": "WAITRETORNO",
       "Transitions": [{ Operation:"RETORNO_CONFIRMADO", Description:"Confirmar Retorno" , "DestinyState": "RETORNOCONFIRMADO"}],      
       "Area": "AreaPURCHASEORDER"
     },
@@ -122,13 +122,13 @@
     },
     {
       "Id": 12,     
-      "SourceState": "AGUARDANDODESTRUIÇÃO",
+      "SourceState": "WAITINGDESTRUIÇÃO",
 	  "Transitions": [{ Operation:"DESTRUCTION_EFETUADA", Description:"Destruição Efetuada" , "DestinyState": "ENCERRAMENTOPROCESSO"}],        
       "Area": "AreaPURCHASEORDER"
     },
     {
       "Id": 13,      
-      "SourceState": "AGUARDANDOIDENTIFICAÇÃO",      
+      "SourceState": "WAITINGIDENTIFICAÇÃO",      
 	  "Transitions": [{ Operation:"PURCHASEORDER_INFORMAR_APOIO_TECNICO", Description:"Informar apoio técnico" , "DestinyState": "EMVISTORIA"}],       
       "Area": "AreaPURCHASEORDER"
     },
@@ -149,16 +149,16 @@
     {
       "Id": 18,     
       "SourceState": "EMVISTORIA",
-      "Transitions": [{ Operation:"AGUARDANDO_IDENTIFICACAO", Description:"Solicitar Apoio Técnico" , "DestinyState": "AGUARDANDOIDENTIFICAÇÃO"},
+      "Transitions": [{ Operation:"WAITING_IDENTIFICACAO", Description:"Solicitar Apoio Técnico" , "DestinyState": "WAITINGIDENTIFICAÇÃO"},
 					  { Operation:"PURCHASEORDER_DIVERGENTE_ALTERAR", Description:"Informar Divergência" , "DestinyState": "DIVERGENTE"},
-					  { Operation:"PURCHASEORDER_VISTORIAR_MATERIAL", Description:"Concluir Vistoria" , "DestinyState": "AGUARDAMOVIMENTAÇÃODESTINO"}	],
+					  { Operation:"PURCHASEORDER_VISTORIAR_MATERIAL", Description:"Concluir Vistoria" , "DestinyState": "WAITMOVIMENTAÇÃODESTINO"}	],
     
       "Area": "AreaPURCHASEORDER"
     },      
     {
       "Id": 21,      
       "SourceState": "MOVIMENTAÇÃOAUTORIZADA",
-      "Transitions": [{ Operation:"PURCHASEORDER_DESEMBARCAR_MATERIAL", Description:"Movimentar Material" , "DestinyState": "AGUARDAMOVIMENTAÇÃO"},
+      "Transitions": [{ Operation:"PURCHASEORDER_DESEMBARCAR_MATERIAL", Description:"Movimentar Material" , "DestinyState": "WAITMOVIMENTAÇÃO"},
 					  { Operation:"ASSOCIA_RT", Description:"Associar RT" , "DestinyState": "None"}],
      
       "Area": "AreaPURCHASEORDER"
@@ -198,14 +198,14 @@
     {
       "Id": 31,     
       "SourceState": "PROTOCOLOREQUERIMENTO",
-      "Transitions": [{ Condition: "DESTRUCTION", Operation:"AGUARDAR_DESTRUCTION", Description:"Aguardar Destruição" , "DestinyState": "AGUARDANDODESTRUIÇÃO"},
-					  { Condition: "!DESTRUCTION", Operation:"PURCHASEORDER_CONFIRMAR_CHEGADA_DESTINO", Description:"Confimar Chegada" , "DestinyState": "AGUARDARETORNO"}],
+      "Transitions": [{ Condition: "DESTRUCTION", Operation:"WAITR_DESTRUCTION", Description:"Aguardar Destruição" , "DestinyState": "WAITINGDESTRUIÇÃO"},
+					  { Condition: "!DESTRUCTION", Operation:"PURCHASEORDER_CONFIRMAR_CHEGADA_DESTINO", Description:"Confimar Chegada" , "DestinyState": "WAITRETORNO"}],
            
       "Area": "AreaPURCHASEORDER"
     },
     {
       "Id": 32,     
-      "SourceState": "AGUARDANDOAPROVAÇÃO",     
+      "SourceState": "WAITINGAPROVAÇÃO",     
 	  "Transitions": [{ Operation:"EmitirPURCHASEASK", Description:"Emitir PURCHASEASK" , "DestinyState": "EMITTED"},
 					  { Operation:"INDEFERIR_PURCHASEASK", Description:"Não Aprovar PURCHASEASK" , "DestinyState": "ATREVISION"}],       
      
@@ -230,7 +230,7 @@
       "Id": 36,     
       "SourceState": "EMRASCUNHO",
 	  "StateOrder": "Initial",
-      "Transitions": [{ Operation:"PedirAprovarPURCHASEASK", Description:"Solicitar Aprovação" , "DestinyState": "AGUARDANDOAPROVAÇÃO"},
+      "Transitions": [{ Operation:"PedirAprovarPURCHASEASK", Description:"Solicitar Aprovação" , "DestinyState": "WAITINGAPROVAÇÃO"},
 					  { Operation:"CancelarRascunho", Description:"Apagar Rascunho" , "DestinyState": "None"}],        
               
       "Area": "AreaPURCHASEASK"
@@ -238,7 +238,7 @@
     {
       "Id": 38,      
       "SourceState": "ATREVISION",
-      "Transitions": [{ Operation:"PedirAprovarPURCHASEASK", Description:"Solicitar Aprovação" , "DestinyState": "AGUARDANDOAPROVAÇÃO"}],     
+      "Transitions": [{ Operation:"PedirAprovarPURCHASEASK", Description:"Solicitar Aprovação" , "DestinyState": "WAITINGAPROVAÇÃO"}],     
     
       "Area": "AreaPURCHASEASK"
     },
@@ -265,7 +265,7 @@
     },
     {
       "Id": 41,      
-      "SourceState": "AGUARDANDOQUESTIONÁRIO",
+      "SourceState": "WAITINGQUESTIONÁRIO",
 	  "Transitions": [{"Condition": "EXPORTATION", Operation:"RETORNAR_ANALISE_REXPORTATION", Description:"Questionario Preenchido" , "DestinyState": "ANALISEPURCHASEASKEXPORTAÇÃO"}],     
                  
       "Area": "AreaPURCHASEASK"
@@ -274,7 +274,7 @@
       "Id": 42,      
       "SourceState": "ANALISEPURCHASEASKEXPORTAÇÃO",
       "Transitions": [{ "Condition": "EXPORTATION", Operation:"RETORNAR_ANALISE", Description:"Retornar Análise" , "DestinyState": "EMANALISE"},
-					  { "Condition": "EXPORTATION", Operation:"AGUADAR_QUESTIONARIO", Description:"Enviar Questionario" , "DestinyState": "AGUARDANDOQUESTIONÁRIO"}],     
+					  { "Condition": "EXPORTATION", Operation:"AGUADAR_QUESTIONARIO", Description:"Enviar Questionario" , "DestinyState": "WAITINGQUESTIONÁRIO"}],     
            
       "Area": "AreaPURCHASEASK"
     },      
@@ -282,8 +282,8 @@
       "Id": 46,
       "Condition": null,
       "SourceState": "All",
-	  "Transitions": [{ "But": ["EMITTED","AGUARDANDOAPROVAÇÃO","PURCHASEORDERGERADO", "None"], Operation:"ALTERAR_ITEM_PURCHASEASK", Description:"Alterar Item" , "DestinyState": "None"},
-					  { "But": ["EMRASCUNHO","EMITTED","AGUARDANDOAPROVAÇÃO","PURCHASEORDERGERADO", "None"], "DestinyState": "None", "Operation": "CANCELAR_ITEM_PURCHASEASK", "Description": "Cancelar Item" } ], 
+	  "Transitions": [{ "But": ["EMITTED","WAITINGAPROVAÇÃO","PURCHASEORDERGERADO", "None"], Operation:"ALTERAR_ITEM_PURCHASEASK", Description:"Alterar Item" , "DestinyState": "None"},
+					  { "But": ["EMRASCUNHO","EMITTED","WAITINGAPROVAÇÃO","PURCHASEORDERGERADO", "None"], "DestinyState": "None", "Operation": "CANCELAR_ITEM_PURCHASEASK", "Description": "Cancelar Item" } ], 
            
       "Area": "GridPURCHASEASK"
     },
@@ -305,14 +305,14 @@
     {
       "Id": 49,     
       "SourceState": "All",
-	  "Transitions": [{ "But": ["AGUARDAMOVIMENTAÇÃO","AGUARDANDOIDENTIFICAÇÃO","CANCELAMENTOSOLICITADOPURCHASEORDER",
+	  "Transitions": [{ "But": ["WAITMOVIMENTAÇÃO","WAITINGIDENTIFICAÇÃO","CANCELAMENTOSOLICITADOPURCHASEORDER",
 			  "DIVERGENTE","EMVISTORIA","MOVIMENTAÇÃOAUTORIZADA", "PURCHASEORDERANALISANDOINDEFERIMENTO" ,
 			  "PURCHASEORDEREMITTED", "PROTOCOLAPURCHASEORDERRECEITA", "ENCERRADO", "CANCELADOPURCHASEORDER", "None"],
 						"DestinyState": "None",
 						"Operation": "LIBERAR_MOVIMENTACAO",
 						"Description": "Movimentar Itens"},
 
-			{ Condition:"EXTINCAO",  "But": ["AGUARDAMOVIMENTAÇÃO","AGUARDANDOIDENTIFICAÇÃO","CANCELAMENTOSOLICITADOPURCHASEORDER",
+			{ Condition:"EXTINCAO",  "But": ["WAITMOVIMENTAÇÃO","WAITINGIDENTIFICAÇÃO","CANCELAMENTOSOLICITADOPURCHASEORDER",
 			  "DIVERGENTE","EMVISTORIA","MOVIMENTAÇÃOAUTORIZADA", "PURCHASEORDERANALISANDOINDEFERIMENTO" ,
 			  "PURCHASEORDEREMITTED", "PROTOCOLAPURCHASEORDERRECEITA", "ENCERRADO", "CANCELADOPURCHASEORDER", "None"],
 					"DestinyState": "None",
