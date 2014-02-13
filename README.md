@@ -1,6 +1,18 @@
 LightWorkFlow
 =============
 
+The first question is: why a new workflow engine instead using WF, that´s supported by Microsoft?
+
+1) You are working with legacy applications, whose code was not built inside a good architecture approach. So, adapting the code and architecture to use WF is not an option.
+
+  1.1) By refactoring legacy applications, in order to avoid "ifs" statements.
+  
+2) You need to test your workflow using unit tests. WF is so dependent on infrastructure, that does this task really painful.
+
+3) There's no infrastructure to use WF. It happens, you can believe.
+
+What's LightWorkFlow?
+
 A lightweight workflow to handle activities and status.
 
 A easy way to handle with workflow. There's no need of a big infrastructure as WF. 
