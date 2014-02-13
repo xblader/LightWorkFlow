@@ -9,7 +9,9 @@ The first question is: why a new workflow engine instead using WF, that´s suppo
   
 2) You need to test your workflow using unit tests. WF is so dependent on infrastructure, that does this task really painful.
 
-3) There's no infrastructure to use WF. It happens, you can believe.
+3) There's no infrastructure to use WF in your company. It happens, you can believe.
+
+4) You don't want to see that ugly XML built by WF design tool. Instead, you'd rather a json file. (That's a good reason)
 
 What's LightWorkFlow?
 
