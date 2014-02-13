@@ -23,3 +23,5 @@ A good way to avoid big and heavy design tools, it fits perfectly for simple cas
 The doc is on the way. Until there, become familiar with lightworkflow seeing WorkflowClient project examples.
 
 There are unit tests to help you as well.
+
+http://lordinateurandme.wordpress.com/2014/02/13/tutorial-lightworkflow-part-1-motivations/
