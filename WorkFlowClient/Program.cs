@@ -24,14 +24,14 @@ namespace WorkFlowClient
 
             IWorkFlow work = WorkFlowManager.GetManager();
             WorkFlowContext workc = work.GetContext()
-                .AddArea("AreaPURCHASEASK")
-                .AddSourceState("ATDRAFT");
+                .SetArea("AreaPURCHASEASK")
+                .SetSourceState("ATDRAFT");
 
             var depth = work.Run(workc, SearchMode.Depth);
 
             work.GetContext()
-                .AddArea("AreaPURCHASEASK")
-                .AddSourceState("ATDRAFT");
+                .SetArea("AreaPURCHASEASK")
+                .SetSourceState("ATDRAFT");
 
             var breadth = (IList<string>)work.Run(workc, SearchMode.Breadth);
 

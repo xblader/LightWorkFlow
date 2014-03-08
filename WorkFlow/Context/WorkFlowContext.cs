@@ -36,19 +36,19 @@ namespace WorkFlow.Context
             return this;
         }
 
-        public WorkFlowContext AddArea(string area)
+        public WorkFlowContext SetArea(string area)
         {
             this.Area = area;
             return this;
         }
 
-        public WorkFlowContext AddSourceState(string source)
+        public WorkFlowContext SetSourceState(string source)
         {
             this.SourceState = source;
             return this;
         }
 
-        public WorkFlowContext AddOperation(string operation)
+        public WorkFlowContext SetOperation(string operation)
         {
             this.Operation = operation;
             return this;

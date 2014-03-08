@@ -40,9 +40,9 @@ namespace WorkFlowTest
         [TestMethod]
         public void GetNextStatus()
         {
-            WorkFlowContext context = work.GetContext().AddArea("AreaPURCHASEASK")
-                                                        .AddOperation("AskAprovePURCHASEASK")
-                                                        .AddSourceState("ATDRAFT");
+            WorkFlowContext context = work.GetContext().SetArea("AreaPURCHASEASK")
+                                                        .SetOperation("AskAprovePURCHASEASK")
+                                                        .SetSourceState("ATDRAFT");
             string status = work.GetNextStatus(context);
             Assert.AreEqual("WAITINGALLOW", status);
         }
@@ -50,9 +50,9 @@ namespace WorkFlowTest
         [TestMethod]
         public void GetNextStatusWithAll()
         {
-            WorkFlowContext context = work.GetContext().AddArea("AreaPURCHASEASK")
-                                                        .AddOperation("SOLICITAR_CANCEL")
-                                                        .AddSourceState("EMITTED");
+            WorkFlowContext context = work.GetContext().SetArea("AreaPURCHASEASK")
+                                                        .SetOperation("SOLICITAR_CANCEL")
+                                                        .SetSourceState("EMITTED");
 
             context["Objective"] = new List<string> { "2" };//deposito
             context["Departament"] = new List<string> { "1" };
@@ -63,8 +63,8 @@ namespace WorkFlowTest
         [TestMethod]
         public void GetAtivities()
         {
-            WorkFlowContext context = work.GetContext().AddArea("AreaPURCHASEASK")                                                        
-                                                        .AddSourceState("ATDRAFT");
+            WorkFlowContext context = work.GetContext().SetArea("AreaPURCHASEASK")                                                        
+                                                        .SetSourceState("ATDRAFT");
             IList<Activity> act = work.GetActivities(context);
             Assert.AreEqual(2, act.Count);
         }
@@ -75,8 +75,8 @@ namespace WorkFlowTest
         [TestMethod]
         public void GetDestinyWithNoOrigin()
         {
-            WorkFlowContext context = work.GetContext().Reset().AddArea("Automatic")
-                                                               .AddOperation("LAST_ITEM_CANCELLED_PURCHASEASK");
+            WorkFlowContext context = work.GetContext().Reset().SetArea("Automatic")
+                                                               .SetOperation("LAST_ITEM_CANCELLED_PURCHASEASK");
 
             string destiny = work.GetNextStatus(context);
             Assert.AreEqual("CANCELLEDPURCHASEASK", destiny);
@@ -91,11 +91,11 @@ namespace WorkFlowTest
             Assert.IsTrue(act.Any(x => x.Operation.Equals("ALTER_ITEM_PURCHASEASK")));
             Assert.IsTrue(act.Any(x => x.Operation.Equals("EXCLUDE_ITEM_PURCHASEASK")));
 
-            work.GetContext().AddSourceState("EMITTED");
+            work.GetContext().SetSourceState("EMITTED");
             IList<Activity> emitido = work.GetActivities(work.GetContext());
             Assert.AreEqual(0, emitido.Count);
 
-            work.GetContext().AddSourceState("ATANALYSIS");
+            work.GetContext().SetSourceState("ATANALYSIS");
             IList<Activity> analise = work.GetActivities(work.GetContext());
             Assert.AreEqual(2, analise.Count);
             Assert.IsTrue(analise.Any(x => x.Operation.Equals("ALTER_ITEM_PURCHASEASK")));
