@@ -25,3 +25,5 @@ The doc is on the way. Until there, become familiar with lightworkflow seeing Wo
 There are unit tests to help you as well.
 
 http://lordinateurandme.wordpress.com/2014/02/13/tutorial-lightworkflow-part-1-motivations/
+
+See WorkFlowClient/Program.cs for good examples.
