@@ -1,7 +1,7 @@
 ﻿{
   "Conditions": [
     {
-      "Name": "EXTINCION",
+      "Name": "EXTINTION",
       "Parameters": [
         {
           "Key": "Objective",
@@ -104,8 +104,8 @@
     {
       "Id": 10,      
       "SourceState": "WAITMOVEMENTDESTINY",
-	  "Transitions": [{ Condition:"!EXTINCION", Operation:"PURCHASEORDER_CONFIRM_ARRIVE_DESTINY", Description:"Confirm chegada" , "DestinyState": "WAITRETURN"},					  
-					  { Condition: "EXTINCION", Operation:"PROTOCOLR_REQUIREMENT", Description:"Protocolar Requerimento" , "DestinyState": "PROTOCOLREQUIREMENT"}],    
+	  "Transitions": [{ Condition:"!EXTINTION", Operation:"PURCHASEORDER_CONFIRM_ARRIVE_DESTINY", Description:"Confirm chegada" , "DestinyState": "WAITRETURN"},					  
+					  { Condition: "EXTINTION", Operation:"PROTOCOLR_REQUIREMENT", Description:"Protocolar Requerimento" , "DestinyState": "PROTOCOLREQUIREMENT"}],    
       "Area": "AreaPURCHASEORDER"
     },
     {
@@ -312,11 +312,11 @@
 						"Operation": "RELEASE_MOVIMENTACAO",
 						"Description": "Move Itens"},
 
-			{ Condition:"EXTINCION",  "But": ["WAITMOVEMENT","WAITINGIDENTIFICATION","CANCELASKEDPURCHASEORDER",
+			{ Condition:"EXTINTION",  "But": ["WAITMOVEMENT","WAITINGIDENTIFICATION","CANCELASKEDPURCHASEORDER",
 			  "DIFFERENT","ATCHECKING","MOVEMENTALLOWED", "PURCHASEORDERANALYZINGREJECTION" ,
 			  "PURCHASEORDEREMITTED", "PROTOCOLPURCHASEORDERBUDGET", "FINISHED", "CANCELLEDPURCHASEORDER", "None"],
 					"DestinyState": "None",
-					"Operation": "RELEASE_EXTINCION",
+					"Operation": "RELEASE_EXTINTION",
 					"Description": "Extinguish Itens"}
 	  
 	  ],           

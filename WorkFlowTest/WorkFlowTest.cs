@@ -128,7 +128,7 @@ namespace WorkFlowTest
             WorkFlowContext context = work.GetContext();
             context["Objective"] = new List<string> { "2" };//deposito
             context["Departament"] = new List<string> { "1" };
-            Assert.IsFalse(context.Match.CheckConditions("EXTINCION", context));
+            Assert.IsFalse(context.Match.CheckConditions("EXTINTION", context));
         }
 
         [TestMethod]
@@ -177,7 +177,7 @@ namespace WorkFlowTest
             context["Objective"] = new List<string> { "3" };//destruction
             context["Departament"] = new List<string> { "1" };
             IList<Activity> lista = work.GetActivities(context);
-            Assert.IsTrue(lista.Count == 2 && lista.Any(x => x.Operation.Equals("RELEASE_EXTINCION")));
+            Assert.IsTrue(lista.Count == 2 && lista.Any(x => x.Operation.Equals("RELEASE_EXTINTION")));
         }
 
         [TestMethod]
