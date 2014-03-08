@@ -41,14 +41,14 @@ namespace WorkFlow.Business.BusinessProcess
                 foreach (var item in this.GetActivities(context).OrderBy(x => x.Operation))
                 {
                     context.Operation = item.Operation;
-                    string novostatus = this.GetNextStatus(context);
+                    string newstatus = this.GetNextStatus(context);
                     string laststate = context.SourceState;
-                    string transicao = string.Format("{0},{1},{2}", context.SourceState, item.Description, novostatus);
+                    string transition = string.Format("{0},{1},{2}", context.SourceState, item.Description, newstatus);
 
-                    if (NotPresent(transicao))
+                    if (NotPresent(transition))
                     {
-                        visitor.Visit(context.SourceState, new Activity { Operation = item.Operation, Description = item.Description }, novostatus);
-                        context.SourceState = novostatus;                        
+                        visitor.Visit(context.SourceState, new Activity { Operation = item.Operation, Description = item.Description }, newstatus);
+                        context.SourceState = newstatus;                        
                         RunInDepth(context, visitor);
                         context.SourceState = laststate;
                     }
@@ -71,24 +71,24 @@ namespace WorkFlow.Business.BusinessProcess
                 foreach (var item in this.GetActivities(context).OrderBy(x => x.Operation))
                 {
                     context.Operation = item.Operation;
-                    string novostatus = this.GetNextStatus(context);
-                    visitor.Visit(statusfila, new Activity { Operation = item.Operation, Description = item.Description }, novostatus);
+                    string newstatus = this.GetNextStatus(context);
+                    visitor.Visit(statusfila, new Activity { Operation = item.Operation, Description = item.Description }, newstatus);
 
-                    if (!mark.Contains(novostatus))
+                    if (!mark.Contains(newstatus))
                     {
-                        fila.Enqueue(novostatus);
-                        mark.Add(novostatus);
+                        fila.Enqueue(newstatus);
+                        mark.Add(newstatus);
                     }
                 }
             }
 
         }
 
-        private bool NotPresent(string transicao)
+        private bool NotPresent(string transition)
         {
-            if (!transitions.Any(x => x.Equals(transicao)))
+            if (!transitions.Any(x => x.Equals(transition)))
             {
-                transitions.Add(transicao);
+                transitions.Add(transition);
                 return true;
             }
 

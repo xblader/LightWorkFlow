@@ -16,10 +16,10 @@ namespace WorkFlowTest.Visitor
            
         }
 
-        public void Visit(string status, WorkFlow.Entities.Activity activity, string novostatus)
+        public void Visit(string status, WorkFlow.Entities.Activity activity, string newstatus)
         {
-            string transicao = string.Format("{0}--[{1}]-->{2} ", status, activity.Description, novostatus);            
-            transicoes.Add(transicao);
+            string transition = string.Format("{0}--[{1}]-->{2} ", status, activity.Description, newstatus);            
+            transicoes.Add(transition);
         }
 
         public object EndVisit()

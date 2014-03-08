@@ -66,13 +66,13 @@ namespace WorkFlowClient
                 .SetArea("AreaPURCHASEASK")
                 .SetSourceState("ATDRAFT");
 
-            var depth = work.Run(workc, SearchMode.Depth);
+            var depth = work.Run(workc, SearchMode.Depth);//all transitions printed in a depth search mode.
 
             work.GetContext()
                 .SetArea("AreaPURCHASEASK")
                 .SetSourceState("ATDRAFT");
 
-            var breadth = (IList<string>)work.Run(workc, SearchMode.Breadth);
+            var breadth = (IList<string>)work.Run(workc, SearchMode.Breadth);//all transitions printed in a breadth search mode.
 
 
             //4.1 configuring visitor
@@ -164,9 +164,9 @@ namespace WorkFlowClient
 
     public class CustomVisitor : IVisitor
     {
-        public void Visit(string status, Activity activity, string novostatus)
+        public void Visit(string status, Activity activity, string newstatus)
         {
-            Console.WriteLine(string.Format("{0}==>{1}==>{2}", status, activity.Description, novostatus));
+            Console.WriteLine(string.Format("{0}==>{1}==>{2}", status, activity.Description, newstatus));
         }
 
         public object EndVisit()

@@ -10,9 +10,9 @@ namespace WorkFlow.Visitors
 
         private IList<string> transitions = new List<string>();
 
-        public virtual void Visit(string status, Entities.Activity activity, string novostatus)
+        public virtual void Visit(string status, Entities.Activity activity, string newstatus)
         {
-            transitions.Add(string.Format("{0}=={1}==>{2}", status, activity.Operation, novostatus));
+            transitions.Add(string.Format("{0}=={1}==>{2}", status, activity.Operation, newstatus));
         }
 
         public virtual object EndVisit()

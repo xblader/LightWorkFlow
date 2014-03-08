@@ -7,7 +7,7 @@ namespace WorkFlow.Visitors
 {
     public interface IVisitor
     {
-        void Visit(string status, Entities.Activity activity, string novostatus);
+        void Visit(string status, Entities.Activity activity, string newstatus);
         object EndVisit();
     }
 }
