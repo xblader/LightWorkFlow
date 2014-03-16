@@ -1,0 +1,104 @@
+﻿{
+  "Conditions": [
+    {
+      "Name": "EXTINTION",
+      "Parameters": [
+        {
+          "Key": "Objective",
+          "Value": [
+            "4",
+            "3",
+            "7",
+            "5",
+            "9",
+            "8"
+          ]
+        }
+      ]
+    },	
+    {
+      "Name": "DESTRUCTION",
+      "Parameters": [
+        {
+          "Key": "Objective",
+          "Value": [
+            "3"
+          ]
+        }
+      ]
+    },	
+    {
+      "Name": "EXPORTATION",
+      "Parameters": [
+        {
+          "Key": "Objective",
+          "Value": [
+            "4",
+            "8"
+          ]
+        }
+      ]
+    },
+    {
+      "Name": "ES",
+      "Parameters": [
+        {
+          "Key": "Departament",
+          "Value": [
+            "40"
+          ]
+        }
+      ]
+    },
+	{
+      "Name": "EHPARTE",
+      "Parameters": [
+        {
+          "Key": "Parte",
+          "Value": [
+            "True"
+          ]
+        }
+      ]
+    },
+	{
+      "Name": "NAOMOVED",
+      "Parameters": [
+        {
+          "Key": "MOVED",
+          "Value": [
+            "false"
+          ]
+        }
+      ]
+    }
+  ],
+  "WorkFlow": [
+    {
+      "Id": 1,      
+      "SourceState": "APPROVED",   
+	  "Transitions": [{ Operation:"CANCEL_ASKED", Description:"None" , "DestinyState": "CANCELASKEDPURCHASEASK"},
+					  { Operation:"ATUALIZA_PURCHASEASK_CANCEL", Description:"None" , "DestinyState": "PURCHASEORDERCREATED"},
+					  { Operation:"PURCHASEORDER_CHECK_MATERIAL", Description:"None" , "DestinyState": "ATCHECKING"},
+					  { Operation:"LAST_ITEM_CANCELLED_PURCHASEASK", Description:"None" , "DestinyState": "CANCELLEDPURCHASEASK"},
+					  { Operation:"ITEM_CANCELLED_PURCHASEORDER", Description:"None" , "DestinyState": "ATANALYSIS"},
+					  { Operation:"CancelPURCHASEASK", Description:"None" , "DestinyState": "CANCELLEDPURCHASEASK"},
+					  { Operation:"LAST_ITEM_CANCELLED_PURCHASEORDER", Description:"None" , "DestinyState": "CANCELLEDPURCHASEORDER"},
+					  { Operation:"CANCEL_ASKED_PURCHASEORDER", Description:"None" , "DestinyState": "CANCELASKEDPURCHASEORDER"}],   
+     
+      "Area": "PURCHASEPROCESS"
+    }, 
+	{
+      "Id": 1,     
+      "SourceState": "APPROVED",
+	  "Transitions": [{ Operation:"PURCHASEORDER_CANCEL", Description:"Cancel PURCHASEORDER" , "DestinyState": "CANCELLEDPURCHASEORDER"}],           
+      "Area": "NEWPURCHASEPROCESS"
+    },
+	{
+      "Id": 2,     
+      "SourceState": "APPROVED",
+	  "Transitions": [{ Operation:"PURCHASEORDER_CANCEL", Description:"Cancel PURCHASEORDER" , "DestinyState": "CANCELLEDPURCHASEORDER"}],           
+      "Area": "NEWPURCHASEPROCESS"
+    }
+  ]
+}
