@@ -16,6 +16,7 @@ namespace WorkFlow
         string GetInitialStatus(string area);
         IList<Activity> GetActivities(WorkFlowContext context, IControlAccess access = null);
         IList<string> ListAreas();
+        IMatchCondition Match { get; set; }
         object Run(WorkFlowContext context, SearchMode mode, IVisitor visitor = null);
         string GetActivityDescription(string operation);
         WorkFlowContext GetContext();

@@ -21,7 +21,13 @@ namespace WorkFlow.Impl
     {
         public static IWorkFlow GetManager()
         {
-            return new RunnerManager { Match = new MatchCondition() };
+            return new RunnerManager { Match = new MatchCondition() };            
+        }
+        public static IWorkFlow GetManager(Type contextType)
+        {
+            IWorkFlow context = (IWorkFlow)Activator.CreateInstance(contextType);
+            context.Match = new MatchCondition();
+            return context;
         }
 
         public static bool Validate(byte[] workflow)

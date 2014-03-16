@@ -13,6 +13,7 @@ using WorkFlow.Context;
 using WorkFlow.DAO;
 using WorkFlow.Configuration;
 using WorkFlow.Impl;
+using WorkFlow.Visitors;
 
 namespace WorkFlowTest
 {
@@ -253,6 +254,56 @@ namespace WorkFlowTest
             string transicoes = string.Join(",", lista.ToArray());
             Assert.AreEqual("ATDRAFT--[Ask Aproving]-->WAITINGALLOW ,ATDRAFT--[Erase Draft]-->None ,WAITINGALLOW--[Emit PURCHASEASK]-->EMITTED ,WAITINGALLOW--[Não Aprove PURCHASEASK]-->ATREVISION ,WAITINGALLOW--[Ask Cancelling]-->CANCELASKEDPURCHASEASK ,EMITTED--[Ask Cancelling]-->CANCELASKEDPURCHASEASK ,EMITTED--[Take PURCHASEASK]-->ATANALYSIS ,ATREVISION--[Ask Aproving]-->WAITINGALLOW ,ATREVISION--[Ask Cancelling]-->CANCELASKEDPURCHASEASK ,CANCELASKEDPURCHASEASK--[Recusar Cancelling]-->None ,ATANALYSIS--[Associate PURCHASEORDER]-->PURCHASEORDERCREATED ,ATANALYSIS--[Correct PURCHASEASK]-->ATREVISION ,ATANALYSIS--[Ask Cancelling]-->CANCELASKEDPURCHASEASK ,PURCHASEORDERCREATED--[Encerrando PURCHASEASK]-->PROCESSFINISHED ,PURCHASEORDERCREATED--[Ask Cancelling]-->CANCELASKEDPURCHASEASK ", transicoes);
                    
-        }        
+        }
+
+        [TestMethod]
+        public void PrintRunnerStrategy()
+        {
+            IWorkFlow workteste = WorkFlowManager.GetManager(typeof(RunnerCustom));
+
+            WorkFlowContext context = workteste
+                                    .GetContext()                                    
+                                    .AddElements("ATDRAFT", "AreaPURCHASEASK");
+
+            var lista = (List<string>)workteste.Run(context, SearchMode.Breadth, new ListVisitor());
+            string transicoes = string.Join(",", lista.ToArray());
+            Assert.AreEqual("ATDRAFT--[Ask Aproving]-->WAITINGALLOW ,ATDRAFT--[Erase Draft]-->None ,WAITINGALLOW--[Emit PURCHASEASK]-->EMITTED ,WAITINGALLOW--[Não Aprove PURCHASEASK]-->ATREVISION ,WAITINGALLOW--[Ask Cancelling]-->CANCELASKEDPURCHASEASK ,EMITTED--[Ask Cancelling]-->CANCELASKEDPURCHASEASK ,EMITTED--[Take PURCHASEASK]-->ATANALYSIS ,ATREVISION--[Ask Aproving]-->WAITINGALLOW ,ATREVISION--[Ask Cancelling]-->CANCELASKEDPURCHASEASK ,CANCELASKEDPURCHASEASK--[Recusar Cancelling]-->None ,ATANALYSIS--[Associate PURCHASEORDER]-->PURCHASEORDERCREATED ,ATANALYSIS--[Correct PURCHASEASK]-->ATREVISION ,ATANALYSIS--[Ask Cancelling]-->CANCELASKEDPURCHASEASK ,PURCHASEORDERCREATED--[Encerrando PURCHASEASK]-->PROCESSFINISHED ,PURCHASEORDERCREATED--[Ask Cancelling]-->CANCELASKEDPURCHASEASK ", transicoes);
+
+        }   
+    }
+
+    public class RunnerCustom : RunnerManager
+    {
+        public override object Run(WorkFlowContext context, SearchMode mode, WorkFlow.Visitors.IVisitor visitor = null)
+        {
+            if (visitor == null)
+                visitor = new DefaultVisitor();
+
+            Queue<string> fila = new Queue<string>();
+            List<string> mark = new List<string>();
+
+            fila.Enqueue(context.SourceState);
+            mark.Add(context.SourceState);
+
+            while (fila.Count != 0)
+            {
+                string statusfila = fila.Dequeue();
+                context.SourceState = statusfila;
+                foreach (var item in this.GetActivities(context).OrderBy(x => x.Operation))
+                {
+                    context.Operation = item.Operation;
+                    string newstatus = this.GetNextStatus(context);
+                    visitor.Visit(statusfila, new Activity { Operation = item.Operation, Description = item.Description }, newstatus);
+
+                    if (!mark.Contains(newstatus))
+                    {
+                        fila.Enqueue(newstatus);
+                        mark.Add(newstatus);
+                    }
+                }
+            }
+
+            return visitor.EndVisit();
+        }
     }
 }
