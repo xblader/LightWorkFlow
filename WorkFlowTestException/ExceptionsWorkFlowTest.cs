@@ -28,7 +28,29 @@ namespace WorkFlowTest
             WorkFlowConfiguration.Binder
                 .SetRepository(typeof(DAOEmbeddedResource))
                 .SetValidator(typeof(ValidatorCustom))
-               .Setup(x => x.TypeName, "WorkFlowTestException.Json.workflowexception.json , WorkFlowTestException");
+               .Setup(x => x.TypeName, "WorkFlowTestException.Json.sourceAreaException.json , WorkFlowTestException");
+
+            work = WorkFlowManager.GetManager();
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(DuplicatedNodeException))]
+        public void RaiseExceptionWhenIdsAreDuplicated()
+        {
+            WorkFlowConfiguration.Binder
+                .SetRepository(typeof(DAOEmbeddedResource))                
+               .Setup(x => x.TypeName, "WorkFlowTestException.Json.idException.json , WorkFlowTestException");
+
+            work = WorkFlowManager.GetManager();
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(DuplicatedNodeException))]
+        public void RaiseExceptionWhenConditionsAreDuplicated()
+        {
+            WorkFlowConfiguration.Binder
+                .SetRepository(typeof(DAOEmbeddedResource))                
+               .Setup(x => x.TypeName, "WorkFlowTestException.Json.conditionException.json , WorkFlowTestException");
 
             work = WorkFlowManager.GetManager();
         }
@@ -37,6 +59,10 @@ namespace WorkFlowTest
     public class ValidatorCustom : IValidator
     {
         public void Validate(Structure structure)
+        {           
+            ValidateDuplicatedSourceAndArea(structure);            
+        }
+        private void ValidateDuplicatedSourceAndArea(Structure structure)
         {
             var totalgrouped = structure.WorkFlow
                 .GroupBy(x => new { x.Area, x.SourceState })
@@ -46,8 +72,8 @@ namespace WorkFlowTest
             foreach (var item in totalgrouped)
             {
                 string message = string.Join(",", item.List.Select(x => x.Id).ToList());
-                throw new DuplicatedNodeException(string.Format("There are duplicated entries: {0}",message));
-            }               
+                throw new DuplicatedNodeException(string.Format("There are duplicated entries for Ids: {0}", message));
+            }
         }
     }
 }

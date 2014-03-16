@@ -251,7 +251,7 @@
       "Area": "AreaPURCHASEASK"
     },
 	{
-	  "Id": 39,      
+	  "Id": 44,      
       "SourceState": "All",
 	  "Transitions": [{ But:["ATDRAFT", "CANCELLEDPURCHASEASK", "CANCELASKEDPURCHASEASK", "PROCESSFINISHED", "None"], Operation:"SOLICITAR_CANCEL", Description:"Ask Cancelling" , "DestinyState": "CANCELASKEDPURCHASEASK"}],
 	  "Area": "AreaPURCHASEASK"
