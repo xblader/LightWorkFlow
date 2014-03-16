@@ -26,7 +26,7 @@ namespace WorkFlow.Validation
 
             foreach (var item in totalgrouped)
             {
-                string message = string.Join(",", item.List.Select(x => x.Name).ToList());
+                string message = item.Key.ToString();
                 throw new DuplicatedNodeException(string.Format("There are duplicated entries for Condition: {0}", message));
             }
         }
