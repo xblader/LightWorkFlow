@@ -25,7 +25,7 @@ namespace WorkFlowTest
         public static void Initialize(TestContext context)
         {
             WorkFlowConfiguration.Binder.SetRepository(typeof(DAOEmbeddedResource))
-                .Setup(x => x.TypeName, "WorkFlow.Json.movimentacao.json , WorkFlowMachine");
+                .Setup(x => x.TypeName, "WorkFlow.Json.workflow.json , LightWorkFlow");
 
             work = WorkFlowManager.GetManager();
         }
@@ -253,6 +253,6 @@ namespace WorkFlowTest
             string transicoes = string.Join(",", lista.ToArray());
             Assert.AreEqual("ATDRAFT--[Ask Aproving]-->WAITINGALLOW ,ATDRAFT--[Erase Draft]-->None ,WAITINGALLOW--[Emit PURCHASEASK]-->EMITTED ,WAITINGALLOW--[Não Aprove PURCHASEASK]-->ATREVISION ,WAITINGALLOW--[Ask Cancelling]-->CANCELASKEDPURCHASEASK ,EMITTED--[Ask Cancelling]-->CANCELASKEDPURCHASEASK ,EMITTED--[Take PURCHASEASK]-->ATANALYSIS ,ATREVISION--[Ask Aproving]-->WAITINGALLOW ,ATREVISION--[Ask Cancelling]-->CANCELASKEDPURCHASEASK ,CANCELASKEDPURCHASEASK--[Recusar Cancelling]-->None ,ATANALYSIS--[Associate PURCHASEORDER]-->PURCHASEORDERCREATED ,ATANALYSIS--[Correct PURCHASEASK]-->ATREVISION ,ATANALYSIS--[Ask Cancelling]-->CANCELASKEDPURCHASEASK ,PURCHASEORDERCREATED--[Encerrando PURCHASEASK]-->PROCESSFINISHED ,PURCHASEORDERCREATED--[Ask Cancelling]-->CANCELASKEDPURCHASEASK ", transicoes);
                    
-        }
+        }        
     }
 }

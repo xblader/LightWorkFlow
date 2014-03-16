@@ -9,7 +9,7 @@ namespace WorkFlowTest.Visitor
 {
     public class ListVisitor : IVisitor
     {        
-        private IList<string> transicoes = new List<string>();
+        private IList<string> transitions = new List<string>();
 
         public ListVisitor()
         {      
@@ -18,13 +18,13 @@ namespace WorkFlowTest.Visitor
 
         public void Visit(string status, WorkFlow.Entities.Activity activity, string newstatus)
         {
-            string transition = string.Format("{0}--[{1}]-->{2} ", status, activity.Description, newstatus);            
-            transicoes.Add(transition);
+            string transition = string.Format("{0}--[{1}]-->{2} ", status, activity.Description, newstatus);
+            transitions.Add(transition);
         }
 
         public object EndVisit()
-        {           
-            return transicoes;
+        {
+            return transitions;
         }
     }
 }

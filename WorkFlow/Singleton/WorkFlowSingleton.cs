@@ -22,6 +22,7 @@ namespace WorkFlow.Singleton
         {
             string json = dalc.GetJson();
             structure = JsonConvert.DeserializeObject<Structure>(json);
+            WorkFlowConfiguration.Binder.Setting.Validator.Validate(structure);
         }
 
         public static WorkFlowSingleton Instance()

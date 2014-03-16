@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Linq.Expressions;
 using System.Reflection;
+using WorkFlow.Validation;
 
 namespace WorkFlow.Configuration
 {
@@ -11,10 +12,17 @@ namespace WorkFlow.Configuration
     {
         internal Type Repository { get; set; }
         internal WorkFlowSettingParameter Parameter { get; set; }
-
+        internal IValidator Validator { get; set; }
         public WorkFlowSettings()
         {
             Parameter = new WorkFlowSettingParameter();
+            Validator = new ValidatorDefault();
+        }
+
+        public WorkFlowSettings SetValidator(Type validator)
+        {
+            Validator = (IValidator)Activator.CreateInstance(validator);
+            return this;
         }
 
         public WorkFlowSettings Setup(Expression<Func<WorkFlowSettingParameter, object>> memberLamda, string value)

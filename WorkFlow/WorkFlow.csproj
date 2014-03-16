@@ -9,7 +9,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>WorkFlow</RootNamespace>
-    <AssemblyName>WorkFlowMachine</AssemblyName>
+    <AssemblyName>LightWorkFlow</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SccProjectName>SAK</SccProjectName>
@@ -95,6 +95,7 @@
     <Compile Include="Entities\Node.cs" />
     <Compile Include="Entities\Structure.cs" />
     <Compile Include="Entities\Transition.cs" />
+    <Compile Include="Exceptions\DuplicatedNodeException.cs" />
     <Compile Include="Exceptions\RepositoryNotFoundException.cs" />
     <Compile Include="Exceptions\StatusNotFoundException.cs" />
     <Compile Include="Exceptions\TypeNameNotFoundException.cs" />
@@ -104,11 +105,13 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Singleton\WorkFlowSingleton.cs" />
     <Compile Include="Utils\WorkFlowUtils.cs" />
+    <Compile Include="Validation\IValidator.cs" />
+    <Compile Include="Validation\ValidatorDefault.cs" />
     <Compile Include="Visitors\DefaultVisitor.cs" />
     <Compile Include="Visitors\IVisitor.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Json\movimentacao.json" />
+    <EmbeddedResource Include="Json\workflow.json" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
