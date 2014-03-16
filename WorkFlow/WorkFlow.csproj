@@ -76,7 +76,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Business\BusinessProcess\BpActivity.cs" />
+    <Compile Include="Business\BusinessProcess\ActivityManager.cs" />
     <Compile Include="Business\BusinessProcess\Runner.cs" />
     <Compile Include="Business\Search\SearchMode.cs" />
     <Compile Include="ConcreteCondition\ConditionBase.cs" />
