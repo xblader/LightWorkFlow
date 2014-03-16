@@ -10,13 +10,16 @@ namespace WorkFlow.Validation
     {
         public void Validate(Entities.Structure structure)
         {
-            var totalgrouped = structure.WorkFlow.GroupBy(x => new { x.Area, x.SourceState }).Count();
-            var totalnodes = structure.WorkFlow.Count();
+            var totalgrouped = structure.WorkFlow
+                .GroupBy(x => new { x.Area, x.SourceState })
+                .Where(grp => grp.Count() > 1)
+                .Select(x => new { Key = x.Key, List = x.ToList() });
 
-            if (totalgrouped != totalnodes)
+            foreach (var item in totalgrouped)
             {
-                throw new DuplicatedNodeException("There are some duplicated nodes.");
-            }            
+                string message = string.Join(",", item.List.Select(x => x.Id).ToList());
+                throw new DuplicatedNodeException(string.Format("There are duplicated entries: {0}", message));
+            }                
         }
     }
 }
