@@ -26,4 +26,11 @@ There are unit tests to help you as well.
 
 http://lordinateurandme.wordpress.com/2014/02/13/tutorial-lightworkflow-part-1-motivations/
 
-See WorkFlowClient/Program.cs for good examples.
+
+For good samples, see links below:
+
+https://github.com/xblader/LightWorkFlow/blob/master/WorkFlowTestException/ExceptionsWorkFlowTest.cs
+
+https://github.com/xblader/LightWorkFlow/blob/master/WorkFlowTest/WorkFlowTest.cs
+
+https://github.com/xblader/LightWorkFlow/blob/master/WorkFlowClient/Program.cs
