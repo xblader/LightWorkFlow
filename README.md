@@ -26,6 +26,9 @@ There are unit tests to help you as well.
 
 http://lordinateurandme.wordpress.com/2014/02/13/tutorial-lightworkflow-part-1-motivations/
 
+http://lordinateurandme.wordpress.com/2014/02/27/tutorial-lightworkflow-part-2-setting-up-json-file/
+
+http://lordinateurandme.wordpress.com/2014/03/19/lightworkflow-setting-oracle-repository/
 
 For good samples, see links below:
 
