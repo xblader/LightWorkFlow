@@ -21,7 +21,7 @@ namespace WorkFlow.Business.BusinessProcess
     {
         private List<string> transitions = new List<string>();
 
-        public string GetNextStatus(WorkFlowContext context)
+        public virtual string GetNextStatus(WorkFlowContext context)
         {
             var retorno = (from w in GetNode().WorkFlow
                            from i in w.Transitions
@@ -31,8 +31,8 @@ namespace WorkFlow.Business.BusinessProcess
                            && context.Match.CheckConditions(i.Condition, context)
                            select i.DestinyState).ToList();
 
-            if (retorno.Count == 0) throw new StatusNotFoundException("Não foi encontrado um destino para esta origem.");
-            if (retorno.Count > 1) throw new StatusNotFoundException("Foram encontrados 2 ou mais Status de destino.");
+            if (retorno.Count == 0) throw new StatusNotFoundException("There is no destiny for this source.");
+            if (retorno.Count > 1) throw new StatusNotFoundException("There are 2 or more destinies.");
 
             return retorno[0].ToString();
         }
