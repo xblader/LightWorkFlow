@@ -21,7 +21,7 @@ namespace WorkFlowClient
         {
             //put this line in a global.asax for web
             WorkFlowConfiguration.Binder.SetRepository(typeof(DAOEmbeddedResource))
-                .Setup(x => x.TypeName, "WorkFlow.Json.movimentacao.json , WorkFlowMachine");
+                .Setup(x => x.TypeName, "WorkFlow.Json.workflow.json , LightWorkFlow");
 
             IWorkFlow work = WorkFlowManager.GetManager();//getting instance of workflow. 
             
