@@ -20,7 +20,7 @@ A lightweight workflow to handle activities and status.
 A easy way to handle with workflow. There's no need of a big infrastructure as WF. 
 A good way to avoid big and heavy design tools, it fits perfectly for simple cases.
 
-The doc is on the way. Until there, become familiar with lightworkflow seeing WorkflowClient project examples.
+Become familiar with lightworkflow seeing WorkflowClient project examples.
 
 There are unit tests to help you as well.
 
