@@ -79,6 +79,8 @@
     <Compile Include="Business\BusinessProcess\ActivityManager.cs" />
     <Compile Include="Business\BusinessProcess\Runner.cs" />
     <Compile Include="Business\Search\SearchMode.cs" />
+    <Compile Include="Command\DefaultWorkFlowCommand.cs" />
+    <Compile Include="Command\IWorkFlowCommand.cs" />
     <Compile Include="ConcreteCondition\ConditionBase.cs" />
     <Compile Include="ConcreteCondition\MatchCondition.cs" />
     <Compile Include="Configuration\WorkFlowConfiguration.cs" />

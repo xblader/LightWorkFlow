@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using WorkFlow.Command;
 using WorkFlow.ConcreteCondition;
 using WorkFlow.Entities;
 
@@ -12,6 +13,7 @@ namespace WorkFlow.Context
         Dictionary<string, List<string>> parameter = new Dictionary<string, List<string>>();
 
         private Structure node;
+        private IWorkFlowCommand commandtype;
         public IMatchCondition Match { get; set; }
 
         public string Area { get; set; }
@@ -95,6 +97,18 @@ namespace WorkFlow.Context
         {
             this.SourceState = sourceState;
             this.Area = area;
+            return this;
+        }
+
+        public WorkFlowContext SetCommand(Type type)
+        {
+            this.commandtype = (IWorkFlowCommand)Activator.CreateInstance(type);
+            return this;
+        }
+
+        public WorkFlowContext Execute()
+        {
+            commandtype.Execute(this);
             return this;
         }
     }

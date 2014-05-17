@@ -14,6 +14,7 @@ using WorkFlow.DAO;
 using WorkFlow.Configuration;
 using WorkFlow.Impl;
 using WorkFlow.Visitors;
+using WorkFlow.Command;
 
 namespace WorkFlowTest
 {
@@ -268,6 +269,19 @@ namespace WorkFlowTest
             var lista = (List<string>)workteste.Run(context, SearchMode.Breadth, new ListVisitor());
             string transicoes = string.Join(",", lista.ToArray());
             Assert.AreEqual("ATDRAFT--[Ask Aproving]-->WAITINGALLOW ,ATDRAFT--[Erase Draft]-->None ,WAITINGALLOW--[Emit PURCHASEASK]-->EMITTED ,WAITINGALLOW--[Não Aprove PURCHASEASK]-->ATREVISION ,WAITINGALLOW--[Ask Cancelling]-->CANCELASKEDPURCHASEASK ,EMITTED--[Ask Cancelling]-->CANCELASKEDPURCHASEASK ,EMITTED--[Take PURCHASEASK]-->ATANALYSIS ,ATREVISION--[Ask Aproving]-->WAITINGALLOW ,ATREVISION--[Ask Cancelling]-->CANCELASKEDPURCHASEASK ,CANCELASKEDPURCHASEASK--[Recusar Cancelling]-->None ,ATANALYSIS--[Associate PURCHASEORDER]-->PURCHASEORDERCREATED ,ATANALYSIS--[Correct PURCHASEASK]-->ATREVISION ,ATANALYSIS--[Ask Cancelling]-->CANCELASKEDPURCHASEASK ,PURCHASEORDERCREATED--[Encerrando PURCHASEASK]-->PROCESSFINISHED ,PURCHASEORDERCREATED--[Ask Cancelling]-->CANCELASKEDPURCHASEASK ", transicoes);
+
+        }
+
+        [TestMethod]
+        public void ExecuteCommand()
+        {
+            IWorkFlow workteste = WorkFlowManager.GetManager();
+
+            WorkFlowContext context = workteste
+                                    .GetContext()
+                                    .AddElements("ATDRAFT", "AreaPURCHASEASK")
+                                    .SetCommand(typeof(DefaultWorkFlowCommand))
+                                    .Execute();
 
         }   
     }
