@@ -58,7 +58,6 @@ namespace WorkFlow.Context
 
         public Structure GetNode()
         {
-            Match = new MatchCondition();
             return node;
         }
 
@@ -90,6 +89,12 @@ namespace WorkFlow.Context
         public WorkFlowContext SetCondition(Type type)
         {
             this.Match = (IMatchCondition)Activator.CreateInstance(type);
+            return this;
+        }
+
+        public WorkFlowContext SetCondition(IMatchCondition matchCondition)
+        {
+            this.Match = matchCondition;
             return this;
         }
 

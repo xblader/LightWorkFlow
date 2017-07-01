@@ -108,7 +108,6 @@ namespace WorkFlowTest
         public void CheckConditionsKeyAndAtLeastOneValueMatch()
         {
             WorkFlowContext context = work.GetContext();
-
             context["Objective"] = new List<string> { "3" };//destruction
             context["Departament"] = new List<string> { "1" };
             Assert.IsTrue(context.Match.CheckConditions("DESTRUCTION", context));
@@ -283,7 +282,94 @@ namespace WorkFlowTest
                                     .SetCommand(typeof(DefaultWorkFlowCommand))
                                     .Execute();
 
-        }   
+        }
+
+        [TestMethod]
+        public void ConditionWithDifferentOperators()
+        {
+            IWorkFlow workteste = WorkFlowManager.GetManager();
+
+            WorkFlowContext context = workteste.GetContext()            
+                .SetArea("TESTCONDITIONSICK")
+                .SetSourceState("INITIAL");
+
+            context["TESTCONDITIONEQUAL"] = new List<string> { "COLD" };
+            context["TESTCONDITIONLT"] = new List<string> { "4" };
+            context["TESTCONDITIONIN"] = new List<string> { "5", "8" };
+
+
+            var activities = workteste.GetActivities(context);
+
+            Assert.AreEqual(2, activities.Count);
+        }
+
+        [TestMethod]
+        public void ConditionWithDifferentOperatorsWithCustomEvaluator()
+        {
+            IWorkFlow workteste = WorkFlowManager.GetManager();
+
+            WorkFlowContext context = workteste.GetContext()
+                .SetArea("TESTCONDITIONSICK")
+                .SetSourceState("INITIAL");
+                
+
+            context["TESTCONDITIONEQUAL"] = new List<string> { "COLD" };
+            context["TESTCONDITIONLT"] = new List<string> { "4" };
+            context["CUSTOM"] = new List<string> { "5", "10" };
+            context["TESTCONDITIONIN"] = new List<string> { "5", "8" };
+
+
+            var activities = workteste.GetActivities(context);
+
+            Assert.AreEqual(2, activities.Count);
+        }
+
+        [TestMethod]
+        public void ConditionWithDifferentOperatorsLastParameterFalse()
+        {
+            IWorkFlow workteste = WorkFlowManager.GetManager();
+
+            WorkFlowContext context = workteste.GetContext()
+                .SetArea("TESTCONDITIONSICK")
+                .SetSourceState("INITIAL");
+
+            context["TESTCONDITIONEQUAL"] = new List<string> { "COLD" };
+            context["TESTCONDITIONLT"] = new List<string> { "4" };
+            context["TESTCONDITIONIN"] = new List<string> { "5", "8", "9", "10" };
+
+
+            var activities = workteste.GetActivities(context);
+
+            Assert.AreEqual(1, activities.Count);
+        }
+    }
+
+    public class CustomEvaluator : IEvaluatorCommand
+    {
+        //there's no successor
+        public IEvaluatorCommand Successor
+        {
+            get;
+
+            set;
+        }
+
+        public bool Execute(Evaluate item, WorkFlowContext context)
+        {
+            bool result = false;
+
+            if (item.Operator == "ENDPOINT")
+            {
+                return true;
+                //search in remote server...
+            }
+            else
+            {
+                result = Successor.Execute(item, context);
+            }
+
+            return result;
+        }
     }
 
     public class RunnerCustom : RunnerManager

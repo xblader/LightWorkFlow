@@ -8,6 +8,6 @@ namespace WorkFlow.Entities
     public class Condition
     {
         public string Name { get; set; }
-        public IList<KeyValuePair<string,IList<string>>> Parameters { get; set; }
+        public IList<Evaluate> Parameters { get; set; }
     }
 }

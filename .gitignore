@@ -3,3 +3,10 @@
 ################################################################################
 
 /WorkFlowTestException/bin/Debug
+/WorkFlowTest/bin/Debug
+/WorkFlowTest/obj/Debug
+/WorkFlowTestException/obj/Debug
+/WorkFlowClient/obj/Debug
+/WorkFlowClient/bin/Debug
+/WorkFlow/bin/Debug
+/WorkFlow/obj/Debug

@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -10,12 +10,13 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>WorkFlow</RootNamespace>
     <AssemblyName>LightWorkFlow</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SccProjectName>SAK</SccProjectName>
     <SccLocalPath>SAK</SccLocalPath>
     <SccAuxPath>SAK</SccAuxPath>
     <SccProvider>SAK</SccProvider>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -25,6 +26,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -33,6 +35,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>false</SignAssembly>
@@ -57,9 +60,11 @@
     <CodeAnalysisRuleDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules</CodeAnalysisRuleDirectories>
     <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
     <CodeAnalysisFailOnMissingRules>false</CodeAnalysisFailOnMissingRules>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'DESENVOLVIMENTO|AnyCPU'">
     <OutputPath>bin\DESENVOLVIMENTO\</OutputPath>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Newtonsoft.Json">
@@ -80,6 +85,7 @@
     <Compile Include="Business\BusinessProcess\Runner.cs" />
     <Compile Include="Business\Search\SearchMode.cs" />
     <Compile Include="Command\DefaultWorkFlowCommand.cs" />
+    <Compile Include="Command\IEvaluatorCommand.cs" />
     <Compile Include="Command\IWorkFlowCommand.cs" />
     <Compile Include="ConcreteCondition\ConditionBase.cs" />
     <Compile Include="ConcreteCondition\MatchCondition.cs" />
@@ -94,9 +100,13 @@
     <Compile Include="DAO\IDAO.cs" />
     <Compile Include="Entities\Activity.cs" />
     <Compile Include="Entities\Condition.cs" />
+    <Compile Include="Entities\Evaluate.cs" />
     <Compile Include="Entities\Node.cs" />
     <Compile Include="Entities\Structure.cs" />
     <Compile Include="Entities\Transition.cs" />
+    <Compile Include="Evaluators\EqEvaluator.cs" />
+    <Compile Include="Evaluators\InEvaluator.cs" />
+    <Compile Include="Evaluators\CompEvaluator.cs" />
     <Compile Include="Exceptions\DuplicatedNodeException.cs" />
     <Compile Include="Exceptions\RepositoryNotFoundException.cs" />
     <Compile Include="Exceptions\StatusNotFoundException.cs" />

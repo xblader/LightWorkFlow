@@ -1,21 +1,34 @@
 ﻿{
   "Conditions": [
     {
+      "Name": "SICK",
+      "Parameters": [
+        {
+          "Key": "TESTCONDITIONEQUAL",
+          "Operator": "eq",
+          "Value": [ "COLD" ]
+        },
+        {
+          "Key": "TESTCONDITIONLT",
+          "Operator": "lt",
+          "Value": [ "5" ]
+        },
+         {
+          "Key": "TESTCONDITIONIN",
+          "Operator": "in",
+          "Value": [ "5", "8", "9" ]
+        }
+      ]
+    },
+    {
       "Name": "EXTINTION",
       "Parameters": [
         {
           "Key": "Objective",
-          "Value": [
-            "4",
-            "3",
-            "7",
-            "5",
-            "9",
-            "8"
-          ]
+          "Value": [ "4", "3", "7", "5", "9", "8" ]
         }
       ]
-    },	
+    },
     {
       "Name": "DESTRUCTION",
       "Parameters": [
@@ -26,7 +39,7 @@
           ]
         }
       ]
-    },	
+    },
     {
       "Name": "EXPORTATION",
       "Parameters": [
@@ -50,7 +63,7 @@
         }
       ]
     },
-	{
+    {
       "Name": "EHPARTE",
       "Parameters": [
         {
@@ -61,7 +74,7 @@
         }
       ]
     },
-	{
+    {
       "Name": "NAOMOVED",
       "Parameters": [
         {
@@ -301,27 +314,75 @@
 					  { Condition:"NAOMOVED" ,But:["CANCELLEDPURCHASEORDER", "FINISHED"] , Operation:"CANCEL_ITEM_PURCHASEORDER", Description:"Cancel Item" , "DestinyState": "None"}], 
           
       "Area": "GridPURCHASEORDER"
-    },   
+    },
     {
-      "Id": 49,     
+      "Id": 49,
       "SourceState": "All",
-	  "Transitions": [{ "But": ["WAITMOVEMENT","WAITINGIDENTIFICATION","CANCELASKEDPURCHASEORDER",
-			  "DIFFERENT","ATCHECKING","MOVEMENTALLOWED", "PURCHASEORDERANALYZINGREJECTION" ,
-			  "PURCHASEORDEREMITTED", "PROTOCOLPURCHASEORDERBUDGET", "FINISHED", "CANCELLEDPURCHASEORDER", "None"],
-						"DestinyState": "None",
-						"Operation": "RELEASE_MOVIMENTACAO",
-						"Description": "Move Itens"},
+      "Transitions": [
+        {
+          "But": [
+            "WAITMOVEMENT",
+            "WAITINGIDENTIFICATION",
+            "CANCELASKEDPURCHASEORDER",
+            "DIFFERENT",
+            "ATCHECKING",
+            "MOVEMENTALLOWED",
+            "PURCHASEORDERANALYZINGREJECTION",
+            "PURCHASEORDEREMITTED",
+            "PROTOCOLPURCHASEORDERBUDGET",
+            "FINISHED",
+            "CANCELLEDPURCHASEORDER",
+            "None"
+          ],
+          "DestinyState": "None",
+          "Operation": "RELEASE_MOVIMENTACAO",
+          "Description": "Move Itens"
+        },
 
-			{ Condition:"EXTINTION",  "But": ["WAITMOVEMENT","WAITINGIDENTIFICATION","CANCELASKEDPURCHASEORDER",
-			  "DIFFERENT","ATCHECKING","MOVEMENTALLOWED", "PURCHASEORDERANALYZINGREJECTION" ,
-			  "PURCHASEORDEREMITTED", "PROTOCOLPURCHASEORDERBUDGET", "FINISHED", "CANCELLEDPURCHASEORDER", "None"],
-					"DestinyState": "None",
-					"Operation": "RELEASE_EXTINTION",
-					"Description": "Extinguish Itens"}
-	  
-	  ],           
-      
+        {
+          Condition: "EXTINTION",
+          "But": [
+            "WAITMOVEMENT",
+            "WAITINGIDENTIFICATION",
+            "CANCELASKEDPURCHASEORDER",
+            "DIFFERENT",
+            "ATCHECKING",
+            "MOVEMENTALLOWED",
+            "PURCHASEORDERANALYZINGREJECTION",
+            "PURCHASEORDEREMITTED",
+            "PROTOCOLPURCHASEORDERBUDGET",
+            "FINISHED",
+            "CANCELLEDPURCHASEORDER",
+            "None"
+          ],
+          "DestinyState": "None",
+          "Operation": "RELEASE_EXTINTION",
+          "Description": "Extinguish Itens"
+        }
+
+      ],
+
       "Area": "PURCHASEORDEROperation"
-    }   
+    },
+    {
+      "Id": 65,     
+      "SourceState": "INITIAL",
+	    "StateOrder": "Initial",
+      "Transitions": [        
+        {
+          "Operation": "DONTMAKEEFFORT",
+          "Description": "Dont make effort",
+          "DestinyState": "TIRED"
+        },
+        {
+          "Condition": "SICK",
+          "Operation": "MAKE EFFORT",
+          "Description": "MAKE EFFORT",
+          "DestinyState": "WILLING"
+        }
+      ],
+     
+      "Area": "TESTCONDITIONSICK"
+    }
   ]
 }

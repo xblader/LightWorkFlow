@@ -39,10 +39,11 @@ namespace WorkFlow.Business.BusinessProcess
 
         public virtual IList<Activity> GetActivities(WorkFlowContext context, IControlAccess access = null)
         {
-            var atividades = from w in GetNode().WorkFlow
+            var nodes = GetNode().WorkFlow.Where(x => x.Area == context.Area);
+                        
+            var atividades = from w in nodes
                              from i in w.Transitions
-                             where w.Area.Equals(context.Area)
-                             && (w.SourceState.Equals(context.SourceState) || context.Match.CheckExcludeAtivity(context.SourceState, w, i))
+                             where (w.SourceState.Equals(context.SourceState) || context.Match.CheckExcludeAtivity(context.SourceState, w, i))
                              && context.Match.CheckConditions(i.Condition, context)
                              select new Activity { Operation = i.Operation, Description = i.Description };
 
