@@ -7,12 +7,14 @@ using WorkFlow.ControlAccess;
 using WorkFlow.Visitors;
 using WorkFlow.Business.Search;
 using WorkFlow.Context;
+using WorkFlow.Validation;
 
 namespace WorkFlow
 {
     public interface IWorkFlow
     {
         string GetNextStatus(WorkFlowContext context);
+        IList<ValidationResult> ValidateNextStatus(WorkFlowContext context);
         string GetInitialStatus(string area);
         IList<Activity> GetActivities(WorkFlowContext context, IControlAccess access = null);
         IList<string> ListAreas();

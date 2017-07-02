@@ -118,6 +118,7 @@
     <Compile Include="Singleton\WorkFlowSingleton.cs" />
     <Compile Include="Utils\WorkFlowUtils.cs" />
     <Compile Include="Validation\IValidator.cs" />
+    <Compile Include="Validation\ValidationResult.cs" />
     <Compile Include="Validation\ValidatorDefault.cs" />
     <Compile Include="Visitors\DefaultVisitor.cs" />
     <Compile Include="Visitors\IVisitor.cs" />

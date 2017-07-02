@@ -6,6 +6,7 @@ using WorkFlow.Command;
 using WorkFlow.Context;
 using WorkFlow.Entities;
 using WorkFlow.Evaluators;
+using WorkFlow.Validation;
 
 namespace WorkFlow.ConcreteCondition
 {
@@ -17,8 +18,11 @@ namespace WorkFlow.ConcreteCondition
                 Successor = new CompEvaluator { Successor = new InEvaluator() }
             };
 
+        private IList<ValidationResult> results = null;
+
         public virtual bool CheckParameters(WorkFlowContext context, Condition cond)
         {
+            results = new List<ValidationResult>();
             var conditions = cond.Parameters.ToDictionary(x => x.Key, y => y.Value);
             //first verifying if parameters keys supply all conditions keys
             bool keysmatch = (context.Count >= conditions.Keys.Count) &&
@@ -26,13 +30,15 @@ namespace WorkFlow.ConcreteCondition
 
             if (!keysmatch) return false;
 
-            foreach (var item in cond.Parameters)
+            foreach (var parameter in cond.Parameters)
             {
-                if (!evaluator.Execute(item, context))
-                    return false;
+                if (!evaluator.Execute(parameter, context))
+                {
+                    results.Add(new ValidationResult(cond, parameter));
+                }
             }
 
-            return true;
+            return !results.Any();
         }
 
         public abstract bool IsOriginStateNotNeeded(Node node, string sourceState);

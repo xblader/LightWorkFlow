@@ -342,6 +342,25 @@ namespace WorkFlowTest
 
             Assert.AreEqual(1, activities.Count);
         }
+        [TestMethod]
+        public void OneParameterNotValidWithMessage()
+        {
+            IWorkFlow workteste = WorkFlowManager.GetManager();
+
+            WorkFlowContext context = workteste.GetContext()
+                .SetArea("TESTCONDITIONSICKNOVALID")
+                .SetOperation("MAKEEFFORT")
+                .SetSourceState("INITIAL");
+
+            context["TESTCONDITIONEQUAL"] = new List<string> { "COLD" };
+            context["TESTCONDITIONLT"] = new List<string> { "6" };
+            context["TESTCONDITIONIN"] = new List<string> { "5", "8", "9" };
+
+
+            var nextstatus = workteste.ValidateNextStatus(context);
+
+            Assert.AreEqual(null, nextstatus);      
+        }
     }
 
     public class CustomEvaluator : IEvaluatorCommand

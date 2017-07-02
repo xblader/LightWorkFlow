@@ -10,5 +10,6 @@ namespace WorkFlow.Entities
         public string Key { get; set; }
         public string Operator { get; set; }
         public IList<string> Value { get; set; }
+        public string Message { get; set; }
     }
 }

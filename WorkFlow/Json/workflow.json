@@ -13,6 +13,28 @@
           "Operator": "lt",
           "Value": [ "5" ]
         },
+        {
+          "Key": "TESTCONDITIONIN",
+          "Operator": "in",
+          "Value": [ "5", "8", "9" ]
+        }
+      ]
+    },
+    {
+      "Name": "SICKNOVALID",
+      "Parameters": [
+        {
+          "Key": "TESTCONDITIONEQUAL",
+          "Operator": "eq",
+          "Value": [ "COLD" ],
+          "Message": "TESTCONDITION NOT EQUAL COLD"
+        },
+        {
+          "Key": "TESTCONDITIONLT",
+          "Operator": "lt",
+          "Value": [ "5" ],
+          "Message": "TESTCONDITIONLT NOT BIGGER THAN 5"
+        },
          {
           "Key": "TESTCONDITIONIN",
           "Operator": "in",
@@ -365,10 +387,10 @@
       "Area": "PURCHASEORDEROperation"
     },
     {
-      "Id": 65,     
+      "Id": 65,
       "SourceState": "INITIAL",
-	    "StateOrder": "Initial",
-      "Transitions": [        
+      "StateOrder": "Initial",
+      "Transitions": [
         {
           "Operation": "DONTMAKEEFFORT",
           "Description": "Dont make effort",
@@ -381,8 +403,28 @@
           "DestinyState": "WILLING"
         }
       ],
-     
+
       "Area": "TESTCONDITIONSICK"
+    },
+    {
+      "Id": 66,
+      "SourceState": "INITIAL",
+      "StateOrder": "Initial",
+      "Transitions": [
+        {
+          "Operation": "DONTMAKEEFFORT",
+          "Description": "Dont make effort",
+          "DestinyState": "TIRED"
+        },
+        {
+          "Condition": "SICKNOVALID",
+          "Operation": "MAKEEFFORT",
+          "Description": "MAKE EFFORT",
+          "DestinyState": "WILLING"
+        }
+      ],
+
+      "Area": "TESTCONDITIONSICKNOVALID"
     }
   ]
 }

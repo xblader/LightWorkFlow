@@ -10,6 +10,7 @@ using WorkFlow.Visitors;
 using WorkFlow.ControlAccess;
 using WorkFlow.Business.Search;
 using WorkFlow.Context;
+using WorkFlow.Validation;
 //using WorkFlow.Business;
 namespace WorkFlow.Business.BusinessProcess
 {
@@ -35,6 +36,10 @@ namespace WorkFlow.Business.BusinessProcess
             if (retorno.Count > 1) throw new StatusNotFoundException("There are 2 or more destinies.");
 
             return retorno[0].ToString();
+        }
+        public IList<ValidationResult> ValidateNextStatus(WorkFlowContext context)
+        {
+            return null;
         }
 
         public virtual IList<Activity> GetActivities(WorkFlowContext context, IControlAccess access = null)
@@ -78,7 +83,7 @@ namespace WorkFlow.Business.BusinessProcess
         public virtual WorkFlowContext GetContext()
         {
             return this;
-        }
+        }        
     }
 }
 
