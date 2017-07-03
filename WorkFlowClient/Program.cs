@@ -11,6 +11,7 @@ using WorkFlow.Context;
 using WorkFlow.DAO;
 using WorkFlow.Entities;
 using WorkFlow.Impl;
+using WorkFlow.Validation;
 using WorkFlow.Visitors;
 
 namespace WorkFlowClient
@@ -145,19 +146,19 @@ namespace WorkFlowClient
 
     public class NewMatch : MatchCondition
     {
-        public override bool CheckConditions(string condition, WorkFlowContext context)
+        public override bool CheckConditions(string condition, WorkFlowContext context, IList<ValidationResult> results = null)
         {
             if (condition == null) return true;
 
             if (condition.StartsWith("!"))
             {
                 Condition cond = GetNode().Conditions.Where(x => x.Name.Equals(condition.Substring(1))).FirstOrDefault();
-                return !CheckParameters(context, cond);
+                return !CheckParameters(context, cond, results);
             }
             else
             {
                 Condition cond = GetNode().Conditions.Where(x => x.Name.Equals(condition)).FirstOrDefault();
-                return CheckParameters(context, cond);
+                return CheckParameters(context, cond, results);
             }
         }
     }

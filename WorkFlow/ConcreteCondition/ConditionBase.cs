@@ -18,11 +18,8 @@ namespace WorkFlow.ConcreteCondition
                 Successor = new CompEvaluator { Successor = new InEvaluator() }
             };
 
-        private IList<ValidationResult> results = null;
-
-        public virtual bool CheckParameters(WorkFlowContext context, Condition cond)
-        {
-            results = new List<ValidationResult>();
+        public virtual bool CheckParameters(WorkFlowContext context, Condition cond, IList<ValidationResult> results = null)
+        {          
             var conditions = cond.Parameters.ToDictionary(x => x.Key, y => y.Value);
             //first verifying if parameters keys supply all conditions keys
             bool keysmatch = (context.Count >= conditions.Keys.Count) &&
@@ -34,16 +31,19 @@ namespace WorkFlow.ConcreteCondition
             {
                 if (!evaluator.Execute(parameter, context))
                 {
+                    if (results == null) return false;
                     results.Add(new ValidationResult(cond, parameter));
                 }
             }
+
+            if (results == null) return true;
 
             return !results.Any();
         }
 
         public abstract bool IsOriginStateNotNeeded(Node node, string sourceState);
 
-        public abstract bool CheckConditions(string p, WorkFlowContext context);
+        public abstract bool CheckConditions(string p, WorkFlowContext context, IList<ValidationResult> results = null);
 
         public abstract bool CheckExcludeAtivity(string sourceState, Entities.Node w, Entities.Transition i);
 

@@ -39,7 +39,16 @@ namespace WorkFlow.Business.BusinessProcess
         }
         public IList<ValidationResult> ValidateNextStatus(WorkFlowContext context)
         {
-            return null;
+            var results = new List<ValidationResult>();
+            var nodes = GetNode().WorkFlow.Where(x => x.Area == context.Area);
+
+            var retorno = (from w in nodes
+                           from i in w.Transitions
+                           where context.Match.IsOriginStateNotNeeded(w, context.SourceState)
+                           && i.Operation.Equals(context.Operation)
+                           && context.Match.CheckConditions(i.Condition, context, results)
+                           select i.DestinyState).ToList();
+            return results;
         }
 
         public virtual IList<Activity> GetActivities(WorkFlowContext context, IControlAccess access = null)

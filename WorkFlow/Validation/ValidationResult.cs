@@ -9,13 +9,13 @@ namespace WorkFlow.Validation
 {
     public class ValidationResult
     {
-        private Condition cond;
-        private Evaluate parameter;
+        public Condition Condition { get; set; }
+        public Evaluate Parameter { get; set; }
 
-        public ValidationResult(Condition cond, Evaluate parameter)
+        public ValidationResult(Condition condition, Evaluate parameter)
         {
-            this.cond = cond;
-            this.parameter = parameter;
+            this.Condition = condition;
+            this.Parameter = parameter;
         }
     }
 }

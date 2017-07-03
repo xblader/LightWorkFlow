@@ -356,10 +356,10 @@ namespace WorkFlowTest
             context["TESTCONDITIONLT"] = new List<string> { "6" };
             context["TESTCONDITIONIN"] = new List<string> { "5", "8", "9" };
 
-
-            var nextstatus = workteste.ValidateNextStatus(context);
-
-            Assert.AreEqual(null, nextstatus);      
+            var results = workteste.ValidateNextStatus(context);
+            
+            Assert.AreEqual(1, results.Count);
+            Assert.IsTrue(results.FirstOrDefault().Parameter.Message == "TESTCONDITIONLT NOT BIGGER THAN 5");
         }
     }
 
