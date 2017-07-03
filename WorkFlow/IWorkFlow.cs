@@ -8,6 +8,8 @@ using WorkFlow.Visitors;
 using WorkFlow.Business.Search;
 using WorkFlow.Context;
 using WorkFlow.Validation;
+using WorkFlow.Evaluators;
+using WorkFlow.Command;
 
 namespace WorkFlow
 {
@@ -22,5 +24,6 @@ namespace WorkFlow
         object Run(WorkFlowContext context, SearchMode mode, IVisitor visitor = null);
         string GetActivityDescription(string operation);
         WorkFlowContext GetContext();
+        WorkFlowContext SetNewEvaluator(IEvaluatorCommand evaluator);
     }
 }

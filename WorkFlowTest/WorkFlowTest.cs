@@ -299,8 +299,8 @@ namespace WorkFlowTest
 
 
             var activities = workteste.GetActivities(context);
-
-            Assert.AreEqual(2, activities.Count);
+            // must be one because im not passing custom parameter...
+            Assert.AreEqual(1, activities.Count);
         }
 
         [TestMethod]
@@ -309,13 +309,14 @@ namespace WorkFlowTest
             IWorkFlow workteste = WorkFlowManager.GetManager();
 
             WorkFlowContext context = workteste.GetContext()
+                .AddEvaluator(new CustomEvaluator())
                 .SetArea("TESTCONDITIONSICK")
                 .SetSourceState("INITIAL");
                 
 
             context["TESTCONDITIONEQUAL"] = new List<string> { "COLD" };
             context["TESTCONDITIONLT"] = new List<string> { "4" };
-            context["CUSTOM"] = new List<string> { "5", "10" };
+            context["CUSTOM"] = new List<string> { "http://" };
             context["TESTCONDITIONIN"] = new List<string> { "5", "8" };
 
 
@@ -379,7 +380,7 @@ namespace WorkFlowTest
 
             if (item.Operator == "ENDPOINT")
             {
-                return true;
+                return item.Value.FirstOrDefault() == "http://";
                 //search in remote server...
             }
             else

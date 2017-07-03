@@ -10,7 +10,7 @@ namespace WorkFlow.Context
 {
     public interface IMatchCondition
     {
-        void AddOperator(IEvaluatorCommand evaluator);
+        IMatchCondition AddOperator(IEvaluatorCommand evaluator);
         bool IsOriginStateNotNeeded(Node node, string sourceState);
         bool CheckConditions(string p, WorkFlowContext context, IList<ValidationResult> results = null);
         bool CheckExcludeAtivity(string sourceState, Entities.Node w, Entities.Transition i);

@@ -47,9 +47,10 @@ namespace WorkFlow.ConcreteCondition
 
         public abstract bool CheckExcludeAtivity(string sourceState, Entities.Node w, Entities.Transition i);
 
-        public void AddOperator(IEvaluatorCommand evaluator)
+        public IMatchCondition AddOperator(IEvaluatorCommand evaluator)
         {
             this.evaluator = InsertEvaluator(this.evaluator, evaluator);
+            return this;
         }
 
         private IEvaluatorCommand InsertEvaluator(IEvaluatorCommand evaluatorSet, IEvaluatorCommand NewEvaluator)

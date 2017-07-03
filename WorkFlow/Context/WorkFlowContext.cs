@@ -116,5 +116,11 @@ namespace WorkFlow.Context
             commandtype.Execute(this);
             return this;
         }
+
+        public WorkFlowContext AddEvaluator(IEvaluatorCommand customEvaluator)
+        {
+            this.Match.AddOperator(customEvaluator);
+            return this;
+        }
     }
 }

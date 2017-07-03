@@ -11,6 +11,7 @@ using WorkFlow.ControlAccess;
 using WorkFlow.Business.Search;
 using WorkFlow.Context;
 using WorkFlow.Validation;
+using WorkFlow.Command;
 //using WorkFlow.Business;
 namespace WorkFlow.Business.BusinessProcess
 {
@@ -92,7 +93,13 @@ namespace WorkFlow.Business.BusinessProcess
         public virtual WorkFlowContext GetContext()
         {
             return this;
-        }        
+        }
+
+        public WorkFlowContext SetNewEvaluator(IEvaluatorCommand evaluator)
+        {
+
+            return this;
+        }
     }
 }
 
