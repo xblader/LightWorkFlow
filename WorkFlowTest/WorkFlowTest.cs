@@ -352,14 +352,14 @@ namespace WorkFlowTest
                 .SetOperation("MAKEEFFORT")
                 .SetSourceState("INITIAL");
 
-            context["TESTCONDITIONEQUAL"] = new List<string> { "COLD" };
+            context["TESTCONDITIONEQUAL"] = new List<string> { "HOT" };
             context["TESTCONDITIONLT"] = new List<string> { "6" };
             context["TESTCONDITIONIN"] = new List<string> { "5", "8", "9" };
 
             var results = workteste.ValidateNextStatus(context);
             
-            Assert.AreEqual(1, results.Count);
-            Assert.IsTrue(results.FirstOrDefault().Parameter.Message == "TESTCONDITIONLT NOT BIGGER THAN 5");
+            Assert.AreEqual(2, results.Count);
+            Assert.IsTrue(results[1].Parameter.Message == "TESTCONDITIONLT NOT BIGGER THAN 5");
         }
     }
 
